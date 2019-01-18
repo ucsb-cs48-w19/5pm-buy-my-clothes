@@ -1,1 +1,1 @@
-
+My name is Caroline Swartz and I am a third year CS major at UCSB. Some things I enjoy doing in my free time are going to the beach, surfing, hiking, taking pictures, and hanging out with friends.
