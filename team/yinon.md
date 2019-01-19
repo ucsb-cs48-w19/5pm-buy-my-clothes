@@ -1,1 +1,1 @@
-Hi, my name is Yinon Rousso and I'm a 3rd year transfer student. I'm a CS major and I enjoy going long walks on the beach. My most prominent languages are C++, follwed by java, then some python.  
+Hi, my name is Yinon Rousso and I'm a 3rd year transfer student. I'm a CS major and I enjoy going long walks on the beach. My most prominent languages are C++, follwed by java, then some python.

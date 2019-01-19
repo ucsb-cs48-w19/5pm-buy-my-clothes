@@ -1,1 +1,1 @@
-Hello I'm Zain and I'm a third year Computer Science major.
+Hello I'm Zain and I'm a third year Computer Science major. I enjoy adventuring because as we all know, it's always adventure time.
