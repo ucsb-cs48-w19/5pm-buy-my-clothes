@@ -1,5 +1,7 @@
 # Shop My Style
 
+https://shop-my-style.herokuapp.com/
+
 ## Project summary
 
 A web app for you to show off your style to others and browse new outfits to shop.
