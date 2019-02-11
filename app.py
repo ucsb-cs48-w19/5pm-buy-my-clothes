@@ -1,9 +1,9 @@
 from flask import Flask, render_template, flash, \
                   request, url_for
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 
-ALLOWED_EXTENSIONS = {'jpg', 'png', 'gif'}
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -14,16 +14,20 @@ def allowed_file(filename):
 def upload_file():
     if request.method == 'POST':
 
-    #check if the post request has the file
-    if 'file' not in request.files:
-        flash('no file part')
-        return redirect(request.url)
+        #check if the post request has the file
+        if 'file' not in request.files:
+            flash('no file part')
+            return redirect(request.url)
 
+        _file = request.files['file']
 
-    file = request.files['file']
+        if _file.filename == '':
+            flash('No file selected')
 
-    if file.filename == '':
-        flash('
+        if _file and allowed_file(_file.filename):
+            filename = secure_filename(_file.filename)
+            _file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            return redirect(url_for('upload_file', filename=filename))
 
  
 @app.route('/')
