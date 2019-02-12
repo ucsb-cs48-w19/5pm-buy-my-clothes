@@ -14,8 +14,8 @@ def index():
 
 @app.route('/test')
 def test_route():
-    posts = get_posts()
-    return render_template('test.html', posts=posts)
+    #posts = get_posts()
+    return render_template('test.html')
 
 if __name__ == "__main__":
     app.run()
