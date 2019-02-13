@@ -1,4 +1,5 @@
 import os
+from base64 import b64encode
 from datetime import datetime
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
@@ -6,19 +7,25 @@ from flask_sqlalchemy import SQLAlchemy
 app = Flask(__name__)
 db = SQLAlchemy(app)
 
-def get_posts():
-    return Post.query.all()
-
-class Post(db.Model):
+class imagePost(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     image = db.Column(db.LargeBinary)
-    hash_val = db.Column(db.String(32), nullable=True)
-    body = db.Column(db.Text, nullable=False)
-    category = db.Column(db.Text, nullable=True)
-    pub_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    #hash_val = db.Column(db.String(32), nullable=True)
+    #body = db.Column(db.Text, nullable=False)
+    #category = db.Column(db.Text, nullable=True)
+    #pub_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
     def __repr__(self):
         return '<Post %r>' % self.id
+
+
+def get_item(_id):
+    obj = imagePost.query.filter_by(id=_id).first()
+    if obj == None:
+        print("NONETYPE AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+        return None
+    return obj
+
 
 #Uncomment for deployment
 #app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
@@ -34,9 +41,11 @@ def index():
 
 @app.route('/test')
 def test_route():
-    posts = Post.query.one()
-    
-    return render_template('test.html', posts=posts)
+    posts = get_item(1)
+    print (posts.id)
+    #print (posts.hash_val)
+    image = b64encode(posts.image) 
+    return render_template('test.html', posts=posts, image=image)
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
@@ -44,7 +53,7 @@ def upload():
 
         file = request.files['file'] 
 
-        new_file = Post(image=file.read())
+        new_file = imagePost(image=file.read())
         db.session.add(new_file)
         db.session.commit()
 

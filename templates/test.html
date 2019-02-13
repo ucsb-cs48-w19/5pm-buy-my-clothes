@@ -1,16 +1,5 @@
 hello world
 
 
-<img src=data:;base64,{{ p.image if p != None else 'NONE' }} />
+<img src="data:;base64,{{ image if image != None else 'NONE' }}" />
 
-
-<!-- <div>
-  {% for post in posts %}
-  <tr>
-    <p>{{ post.id }}</p>
-    <p>{{ post.body }}</p>
-    <p>{{ post.category }}</p>
-    <p>{{ post.pub_date }}</p>
-  </tr>
-  {% endfor %}
-</div> -->
