@@ -27,14 +27,31 @@ https://shop-my-style.herokuapp.com/
 ### Installation Steps
 
 Download the latest version of [Python3](https://www.python.org/downloads/) and [pip](https://pypi.org/project/pip/).
+
 Run the following commands
+
 `pip3 install flask --user`
+
 `pip3 install flask_sqlalchemy --user`
+
 `pip3 install alembic --user`
+
 `pip3 install flask_script --user`
+
 `pip3 install flask_migrate --user`
+
 `pip3 install psycopg2 --user`
+
 `pip3 install gunicorn --user`
+
+Clone our directory.
+Next, cd into your project directory and type `python3` and run the following commands
+
+```
+from app import db
+db.create_all()
+```
+
 
 
 
