@@ -3,8 +3,9 @@ from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
-#app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
-#db = SQLAlchemy(app)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+db = SQLAlchemy(app)
 
 @app.route('/')
 def index():
@@ -12,8 +13,8 @@ def index():
 
 @app.route('/test')
 def test_route():
-    #posts = get_posts()
-    return render_template('test.html')
+    posts = get_posts()
+    return render_template('test.html', posts=posts)
 
 if __name__ == "__main__":
     app.run()
@@ -26,7 +27,7 @@ class User(db.Model):
 
     def __repr__(self):
         return '<User %r>' % self.username
-
+'''
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -37,4 +38,3 @@ class Post(db.Model):
 
     def __repr__(self):
         return '<Post %r>' % self.id
-'''
