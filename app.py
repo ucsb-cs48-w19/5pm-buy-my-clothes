@@ -1,5 +1,5 @@
 from flask import Flask, render_template, \
-                  request, url_for
+                  request, url_for, flash
 from werkzeug.utils import secure_filename
 import os
 
@@ -9,7 +9,7 @@ SECRET_KEY = 'AAAAAAAAAAAAAAA'
 
 app = Flask(__name__)
 app.config['UPLOAD_PHOTO'] = PATH_TO_PICTURE
-app.secret = SECRET_KEY
+app.secret_key = SECRET_KEY
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -29,6 +29,7 @@ def upload_file():
         if _file and allowed_file(_file.filename):
             filename = secure_filename(_file.filename)
             _file.save(os.path.join(app.config['UPLOAD_PHOTO'], filename))
+            flash('Upload Complete!')
             return render_template('index.html')
 
     else: #This is the case for the get request 
