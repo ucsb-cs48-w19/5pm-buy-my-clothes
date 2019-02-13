@@ -30,13 +30,7 @@ Download the latest version of [Python3](https://www.python.org/downloads/) and 
 
 Run the following commands
 ```
-pip3 install flask --user
-pip3 install flask_sqlalchemy --user
-pip3 install alembic --user
-pip3 install flask_script --user
-pip3 install flask_migrate --user
-pip3 install psycopg2 --user
-pip3 install gunicorn --user
+pip3 install flask flask_sqlalchemy alembic flask_script flask_migrate psycopg2 gunicorn --user
 ```
 
 Clone our directory.
