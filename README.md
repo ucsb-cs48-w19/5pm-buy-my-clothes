@@ -41,15 +41,14 @@ from app import db
 db.create_all()
 ```
 
-
-
-
 ## Run application locally
 `FLASK_APP=app.py flask run`
 
 `should be running on http://localhost:5000/ `
 
-## Run application
+## Run application on heroku
+
+Run the command `heroku addons:add heroku-postgresql:hobby-dev`
 
 ## Functionality
 
