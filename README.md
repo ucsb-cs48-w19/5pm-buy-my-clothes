@@ -1,7 +1,6 @@
 # Shop My Style
 
-## Project summary
-
+## Project summar
 A web app for you to show off your style to others and browse new outfits to shop.
 
 ### Additional information about the project
@@ -15,18 +14,36 @@ https://shop-my-style.herokuapp.com/
 ### Prerequisites
 
 - Python3
-- pip
-- Flask
+- pip 
+- flask
+- flask_sqlalchemy
+- alembic
+- flask_script
+- flask_migrate
+- psycopg2
+- gunicorn
+
 
 ### Installation Steps
 
 Download the latest version of [Python3](https://www.python.org/downloads/) and [pip](https://pypi.org/project/pip/).
-Install Flask with the command `pip3 install flask`.
+Run the following commands
+`pip3 install flask --user`
+`pip3 install flask_sqlalchemy --user`
+`pip3 install alembic --user`
+`pip3 install flask_script --user`
+`pip3 install flask_migrate --user`
+`pip3 install psycopg2 --user`
+`pip3 install gunicorn --user`
+
+
 
 ## Run application locally
 `FLASK_APP=app.py flask run`
 
 `should be running on http://localhost:5000/ `
+
+## Run application
 
 ## Functionality
 
