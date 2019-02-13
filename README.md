@@ -8,7 +8,7 @@ A web app for you to show off your style to others and browse new outfits to sho
 
 You can upload pictures of your outfit anytime, anywhere for others to view. You can browse photos from other users, find the brands you know you love or find all new styles to wear.
 
-https://caroline-shop-my-style.herokuapp.com/
+https://shop-my-style.herokuapp.com/
 
 ## Installation
 
@@ -24,7 +24,8 @@ Download the latest version of [Python3](https://www.python.org/downloads/) and 
 Install Flask with the command `pip3 install flask`.
 
 ## Run application locally
-`FLASK_APP=hello.py flask run`
+`FLASK_APP=app.py flask run`
+
 `should be running on http://localhost:5000/ `
 
 ## Functionality
