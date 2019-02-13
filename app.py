@@ -20,6 +20,9 @@ def test_route():
 if __name__ == "__main__":
     app.run()
 
+def get_posts():
+    return Post.query.all()
+
 '''
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -32,7 +35,7 @@ class User(db.Model):
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    image = db.Column(db.String(120), unique=True, nullable=False)
+    image = db.Column(db.LargeBinary)
     body = db.Column(db.Text, nullable=False)
     category = db.Column(db.Text, nullable=True)
     pub_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
