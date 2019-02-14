@@ -46,7 +46,7 @@ def test_route():
     #print (posts.hash_val)
     image = str(b64encode(imagePost.image))[2:-1] #string parsing for python
     print(image)
-    return render_template('test.html', imagePost=imagePosts, image=image)
+    return render_template('test.html', imagePost=imagePost, image=image)
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
