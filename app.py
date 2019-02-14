@@ -15,10 +15,8 @@ class imagePost(db.Model):
     #body = db.Column(db.Text, nullable=False)
     #category = db.Column(db.Text, nullable=True)
     #pub_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-
     def __repr__(self):
         return '<Post %r>' % self.id
-
 
 def get_item(_id):
     obj = imagePost.query.filter_by(id=_id).first()
