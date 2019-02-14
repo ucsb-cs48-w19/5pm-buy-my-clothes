@@ -54,7 +54,7 @@ def test_route():
 def upload():
     if request.method == 'POST':
 
-        file = request.files['file'] 
+        file = request.files['file']
         filename = file.filename
 
         new_file = imagePost(image=file.read(), filename=filename)
@@ -69,4 +69,3 @@ def upload():
 
 if __name__ == "__main__":
     app.run()
-

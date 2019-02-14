@@ -1,6 +1,6 @@
 # Shop My Style
 
-## Project summar
+## Project summary
 A web app for you to show off your style to others and browse new outfits to shop.
 
 ### Additional information about the project
@@ -14,7 +14,7 @@ https://shop-my-style.herokuapp.com/
 ### Prerequisites
 
 - Python3
-- pip 
+- pip
 - flask
 - flask_sqlalchemy
 - alembic
