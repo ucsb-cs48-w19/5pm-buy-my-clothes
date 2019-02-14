@@ -47,6 +47,7 @@ def parse_filename(in_string):
 	return filename, extension
 
 
+
 #Uncomment for deployment
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
 
