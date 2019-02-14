@@ -1,5 +1,9 @@
 <!doctype html5> 
 <html>
+	{% for imagePost in imagePosts %}
 	<h1>Now Showing picture: {{imagePost.filename}}</h1>
-	<img src="data:image/{{imagePost.extension}};base64, {{ image if image != None else 'NONE' }}" />
+	<img src="data:image{{imagePost.extension}};base64, {{ imagePost.image if imagePost.image != None else 'NONE' }}" />
+	<h2> {{imagePost.body}} </h2>
+	<h2> {{imagePost.category}} </h2>
+	{% endfor %}
 </html>

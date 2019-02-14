@@ -13,9 +13,9 @@ class imagePost(db.Model):
 	filename = db.Column(db.Text, nullable=False)
 	extension = db.Column(db.String(5), nullable=False)
 	#hash_val = db.Column(db.String(32), nullable=True)
-	#body = db.Column(db.Text, nullable=False)
-	#category = db.Column(db.Text, nullable=True)
-	#pub_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+	body = db.Column(db.Text, nullable=False)
+	category = db.Column(db.Text, nullable=True)
+	pub_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 	def __repr__(self):
 		return '<Post %r>' % self.id
 
@@ -23,12 +23,16 @@ def get_item(_id):
     obj = imagePost.query.filter_by(id=_id).first()
     return obj
 
+def get_all_items():
+	objs = imagePost.query.all()
+	return objs
+
 def get_filename(name):
     return imagePost.query.filter_by(filename=name).first()
 
 def parse_filename(in_string):
 
-	ACCEPTED_EXTENSIONS = {'png', 'jpeg', 'gif'}
+	ACCEPTED_EXTENSIONS = {'png','jpg', 'jpeg', 'gif'}
 	lst = in_string.split('.')
 
 	if (len(lst) != 2):
@@ -45,10 +49,10 @@ def parse_filename(in_string):
 	
  
 #Uncomment for deployment
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
+#app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
 
 #Comment for local testing
-#app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(os.getcwd() , 'database/app.db')
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(os.getcwd() , 'database/app.db')
 print(app.config['SQLALCHEMY_DATABASE_URI'])
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 
@@ -58,9 +62,11 @@ def index():
 
 @app.route('/test')
 def test_route():
-	imagePost = get_item(1)
-	image = str(b64encode(imagePost.image))[2:-1] #string parsing for python
-	return render_template('test.html', imagePost=imagePost, image=image)
+	imagePosts = get_all_items()
+	for i in range(len(imagePosts)):
+		
+		imagePosts[i].image = str(b64encode(imagePosts[i].image))[2:-1] #string parsing for python
+	return render_template('test.html', imagePosts=imagePosts)
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
@@ -70,8 +76,13 @@ def upload():
 		
 		if filename == None or extension == None:
 			return "oopsie woopsie you messed up"
-
-		new_file = imagePost(image=file.read(), filename=filename, extension=extension)
+		#body = 'This is the body'
+		#category = 'category'
+		body = request.form['description']
+		category = request.form['category']
+		print('body', body)
+		print('category', category)
+		new_file = imagePost(image=file.read(), filename=filename, extension=extension, body=body, category=category)
 
 		db.session.add(new_file)
 		db.session.commit()
