@@ -48,19 +48,19 @@ db.create_all()
 
 ## Run application on heroku
 
-Login to Heroku 'heroku login'
+Login to Heroku `heroku login` 
 
-Create a new Heroku app 'heroku create APP_NAME_HERE'
+Create a new Heroku app `heroku create APP_NAME_HERE`
 
 Create a Postgresql database by running the command `heroku addons:add heroku-postgresql:hobby-dev`
 
 Now we need to initialze a table by running the following commands:
 
-'heorku run python3'
-'from app import db'
-'db.create_all()'
+`heorku run python3`
+`from app import db`
+`db.create_all()`
 
-Lanch Heroku app: 'git push heroku master'
+Lanch Heroku app: `git push heroku master`
 
 ## Functionality
 
