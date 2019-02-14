@@ -33,32 +33,44 @@ Run the following commands
 pip3 install flask flask_sqlalchemy alembic flask_script flask_migrate psycopg2 gunicorn --user
 ```
 
-Clone our directory.
-Next, cd into your project directory and type `python3` and run the following commands
+Clone our directory
+`git clone git@github.com:ucsb-cs48-w19/5pm-buy-my-clothes.git`
 
+Next, cd into your project directory 
+`cd 5pm-buy-my-clothes`
+
+## Run application locally
+
+Open a python shell 
+`python3` 
+
+Create a local database
 ```
 from app import db
 db.create_all()
 ```
-
-## Run application locally
+Run app 
 `FLASK_APP=app.py flask run`
 
 `should be running on http://localhost:5000/ `
 
 ## Run application on heroku
 
-Login to Heroku `heroku login` 
+Login to Heroku 
+`heroku login` 
 
-Create a new Heroku app `heroku create APP_NAME_HERE`
+Create a new Heroku app 
+`heroku create APP_NAME_HERE`
 
-Create a Postgresql database by running the command `heroku addons:add heroku-postgresql:hobby-dev`
+Create a Postgresql database by running the command 
+`heroku addons:add heroku-postgresql:hobby-dev`
 
 Now we need to initialze a table by running the following commands:
 
-`heorku run python3`
+`heroku run python3`
 `from app import db`
 `db.create_all()`
+`exit()`
 
 Lanch Heroku app: `git push heroku master`
 
