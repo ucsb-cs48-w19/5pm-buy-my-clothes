@@ -5,7 +5,14 @@
 
 {% block content %}
 
-<form method=post enctype=multipart/form-data>
+<form method=post action="/upload" enctype=multipart/form-data>
+
+<div class="form-group">
+    <textarea class="form-control" name="description" placeholder="Description" id="exampleFormControlTextarea1" rows="3"></textarea>
+ </div>
+
+<input class="form-control" type="text" name="category" placeholder="Categories">
+
     <input type=file name=file>
     <input type=submit value=Upload>
 </form>
