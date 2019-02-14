@@ -1,10 +1,5 @@
-<div>
-  {% for post in posts %}
-  <tr>
-    <p>{{ post.id }}</p>
-    <p>{{ post.body }}</p>
-    <p>{{ post.category }}</p>
-    <p>{{ post.pub_date }}</p>
-  </tr>
-  {% endfor %}
-</div>
+<!doctype html5> 
+<html>
+	<h1>Now Showing picture: {{imagePost.filename}}</h1>
+	<img src="data:image/png;base64, {{ image if image != None else 'NONE' }}" />
+</html>
