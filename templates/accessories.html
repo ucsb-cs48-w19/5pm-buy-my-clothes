@@ -1,9 +1,8 @@
-<!DOCTYPE html>
-<html>
-  <body>
+{% extends "base.html" %}
+
+{% block content %}
     <div class="accessories">
-      <h1>Accessories</h1>
-      <p>.This page should contain women's accessories.</p>
+      <h1>{{category}}</h1>
+      <p>.This page should contain women's {{category}}.</p>
     </div>
-  </body>
-</html>
+{% endblock %}

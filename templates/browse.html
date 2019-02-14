@@ -1,64 +1,22 @@
-<!DOCTYPE html>
-<html>
-<title>Browse Styles</title>
-<meta charset="UTF-8">
+{% extends "base.html" %}
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<style>
-body,h1 {font-family: "Montserrat", sans-serif}
-img {margin-bottom: -7px}
-.w3-row-padding img {margin-bottom: 12px}
-</style>
-<body>
-
-<!-- !PAGE CONTENT! -->
-<div class="w3-main" style="max-width:1500px">
-
-<!--NAVIGATION BAR -->
-<nav class="navbar navbar-inverse">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="#">Shop My Style</a>
-    </div>
-    <ul class="nav navbar-nav">
-      <li class="active"><a href="{{ url_for('index_func') }}">Home</a></li>
-      <li><a href="{{ url_for('browse_func') }}">Browse</a></li>
-    </ul>
-    <form class="navbar-form navbar-left" action="/action_page.php">
-      <div class="form-group">
-        <input type="text" class="form-control" placeholder="Search" name="sear\
-ch">
-      </div>
-      <button type="submit" class="btn btn-default">Submit</button>
-    </form>
-  </div>
-</nav>
-
+{% block content %}
 
 <!-- Header -->
 <div class="w3-opacity">
 <header class="w3-center w3-margin-bottom">
   <h1><b>BROWSE</b></h1>
   <p><b>Browse by Category</b></p>
-  <p class="w3-padding-16"><button class="w3-button w3-black" onclick="myFunction()">Toggle Grid Padding</button></p>
 </header>
 </div>
 
 <!-- Photo Grid -->
 <div class="w3-row-padding" id="myGrid" style="margin-bottom:128px">
   <div class="w3-third w3-container w3-margin-bottom">
-    <a href="{{ url_for('dresses_func') }}">
+    <a href="{{ url_for('category_func') }}">
       <img src="/static/browsepage/dress.JPG" style="width:100%" class="w3-hover-opacity">
     </a>
-    <a href="{{ url_for('accessories_func') }}">
+    <a href="{{ url_for('category_func') }}">
       <img src="/static/browsepage/accessories.jpeg" style="width:100%" class="w3-hover-opacity">
     </a>
     <img src="/static/browsepage/jewelry.JPG" style="width:100%" class="w3-hover-opacity">
@@ -85,18 +43,4 @@ ch">
 
 <!-- End Page Content -->
  
-<script>
-// Toggle grid padding
-function myFunction() {
-  var x = document.getElementById("myGrid");
-  if (x.className === "w3-row") {
-    x.className = "w3-row-padding";
-  } else { 
-    x.className = x.className.replace("w3-row-padding", "w3-row");
-  }
-}
-
-</script>
-
-</body>
-</html>
+{% endblock %}
