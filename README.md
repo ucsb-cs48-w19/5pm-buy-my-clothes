@@ -35,7 +35,7 @@ pip3 install flask flask_sqlalchemy alembic flask_script flask_migrate psycopg2 
 
 Clone our directory
 
-```git clone git@github.com:ucsb-cs48-w19/5pm-buy-my-clothes.git````
+```git clone git@github.com:ucsb-cs48-w19/5pm-buy-my-clothes.git```
 
 Next, cd into your project directory 
 
