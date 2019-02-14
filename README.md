@@ -71,10 +71,18 @@ Create a Postgresql database by running the command
 `heroku addons:add heroku-postgresql:hobby-dev`
 
 Now we need to initialze a table by running the following commands:
+
 `heroku run python3`
-  `from app import db`
-  `db.create_all()`
-  `exit()`
+
+`from app import db`
+
+`db.create_all()`
+
+You can exit the heroku python shell with the command`exit()`
+
+Your app should be running on 
+
+`https://APP_NAME_HERE.herokuapp.com`
 
 ## Functionality
 
