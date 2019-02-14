@@ -39,7 +39,7 @@ Clone our directory
 
 Next, cd into your project directory 
 
-````cd 5pm-buy-my-clothes````
+```cd 5pm-buy-my-clothes```
 
 ## Run application locally
 
