@@ -5,6 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 </head>
@@ -61,6 +62,49 @@
     </div>
   </div>
 </div>
+
+<!-- POP UP DESCRIPTION BOX -->
+
+<!-- outfit1 -->
+<!-- Image to click on to trigger/open modal-->
+<div class="container">
+  <div class="row">
+    <div class="col-md-4">
+      <div class="thumbnail">
+        <img id="myImg" src="static/images/outfit.jpg" alt="outfit1" style="width:100%">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- The Modal -->
+<div id="myModal" class="modal">
+  <span class="close">&times;</span>
+  <!-- <img class="modal-content" id="img01"> -->
+  <div id="caption"></div>
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <div class="modal-header">
+      <!-- <span class="close">&times;</span> -->
+      <h2>Outfit 1</h2>
+    </div>
+    <div class="modal-body">
+      <img src="static/images/outfit.jpg" alt="Nature" style="width:100%">
+      <p> <a href="https://www.pacsun.com/" target="_blank"> Top </a> </p>
+      <p>
+        <a href="https://www.showpo.com/us/highest-point-pants-in-beige" target="_blank">
+        Bottom </a>
+      </p>
+    </div>
+    <div class="modal-footer">
+      <h3> Comments: </h3>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript" src="{{ url_for('static', filename='js/modal.js') }}"></script> 
+<!-- END OF DESCRIPTION BOX -->
 
 </body>
 </html>
