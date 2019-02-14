@@ -23,7 +23,7 @@ class imagePost(db.Model):
 def get_item(_id):
     obj = imagePost.query.filter_by(id=_id).first()
     if obj == None:
-        print("NONETYPE AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+        print("NONETYPE")
         return None
     return obj
 
