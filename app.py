@@ -1,7 +1,7 @@
 import os
 from base64 import b64encode
 from datetime import datetime
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, url_for, redirect
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -46,25 +46,54 @@ def parse_filename(in_string):
 
 	return filename, extension
 
-	
- 
+
+
 #Uncomment for deployment
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
+#app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
 
 #Comment for local testing
-#app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(os.getcwd() , 'database/app.db')
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(os.getcwd() , 'database/app.db')
 print(app.config['SQLALCHEMY_DATABASE_URI'])
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return redirect(url_for('clothes'))
+
+@app.route('/browse')
+def browse():
+    return render_template('browse.html')
+
+@app.route('/clothes')
+def clothes():
+    postList = get_all_items()
+
+    imageList = []
+    for post in postList:
+        image = str(b64encode(post.image))[2:-1]
+        image_post_tuple = (post, image)
+        imageList.append(image_post_tuple)
+
+    col1 = []
+    col2 = []
+    col3 = []
+
+    for i in range(len(imageList)):
+        if i % 3 == 0:
+            col1.append(imageList[i])
+        elif i % 3 == 1:
+            col2.append(imageList[i])
+        elif i % 3 == 2:
+            col3.append(imageList[i])
+
+
+    return render_template('clothes.html', pic_col1=col1, pic_col2=col2, pic_col3=col3)
 
 @app.route('/test')
 def test_route():
 	imagePosts = get_all_items()
 	for i in range(len(imagePosts)):
-		
+
 		imagePosts[i].image = str(b64encode(imagePosts[i].image))[2:-1] #string parsing for python
 	return render_template('test.html', imagePosts=imagePosts)
 
@@ -73,7 +102,7 @@ def upload():
 	if request.method == 'POST':
 		file = request.files['file']
 		filename, extension = parse_filename(file.filename) #input sanitization
-		
+
 		if filename == None or extension == None:
 			return "oopsie woopsie you messed up"
 		#body = 'This is the body'
@@ -87,7 +116,7 @@ def upload():
 		db.session.add(new_file)
 		db.session.commit()
 
-		return file.filename + "uploaded!"
+		return redirect(url_for('clothes'))
 
 	else:
 		return render_template('upload.html')
