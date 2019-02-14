@@ -44,9 +44,9 @@ def index():
 
 @app.route('/test')
 def test_route():
-    posts = get_filename('KEM.png')
+	imagePost = get_item(1)
     #print (posts.hash_val)
-    image = str(b64encode(posts.image))[2:-1]
+    image = str(b64encode(imagePost.image))[2:-1] #string parsing for python
     print(image)
     return render_template('test.html', imagePost=posts, image=image)
 
