@@ -10,23 +10,42 @@
 <div class="w3-row-padding" id="myGrid" style="margin-bottom:128px">
   <div class="w3-third w3-container w3-margin-bottom">
   {% for pic in pic_col1 %}
+<<<<<<< HEAD
+    <img src="data:image/jpg;base64,{{pic[1]}}" style="width:100%" class="w3-hover-opacity" onclick="popup('{{pic[0].body}}')">
+
+=======
     <img src="data:image/{{pic[0].extension}};base64,{{pic[1]}}" style="width:100%" class="w3-hover-opacity">
+>>>>>>> e63e28482fe46c42e01ee782d474929ee42989dc
   {% endfor %}
   </div>
 
   <div class="w3-third w3-container w3-margin-bottom">
   {% for pic in pic_col2 %}
+<<<<<<< HEAD
+    <img src="data:image/jpg;base64, {{pic[1]}}" style="width:100%" class="w3-hover-opacity" onclick="popup('{{pic[0].body}}')">
+=======
     <img src="data:image/{{pic[0].extension}};base64, {{pic[1]}}" style="width:100%" class="w3-hover-opacity">
+>>>>>>> e63e28482fe46c42e01ee782d474929ee42989dc
   {% endfor %}
   </div>
 
   <div class="w3-third w3-container w3-margin-bottom">
   {% for pic in pic_col3 %}
+<<<<<<< HEAD
+    <img src="data:image/jpg;base64, {{pic[1]}}" style="width:100%" class="w3-hover-opacity" onclick="popup('{{pic[0].body}}')">
+=======
     <img src="data:image/{{pic[0].extension}};base64, {{pic[1]}}" style="width:100%" class="w3-hover-opacity">
+>>>>>>> e63e28482fe46c42e01ee782d474929ee42989dc
   {% endfor %}
   </div>
 
 </div>
+<script>
+function popup(description)
+{
+  alert(description);
+}
+</script>
 
 {% endblock %}
 
