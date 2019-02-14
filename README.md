@@ -49,7 +49,8 @@ Create a local database
 from app import db
 db.create_all()
 ```
-Run app 
+Run app locally
+
 `FLASK_APP=app.py flask run`
 
 `should be running on http://localhost:5000/ `
@@ -62,11 +63,11 @@ Login to Heroku
 
 Create a new Heroku app 
 
-`heroku create APP_NAME_HERE`
+```heroku create APP_NAME_HERE```
 
 Lanch Heroku app:
 
-`git push heroku master`
+```git push heroku master```
 
 Now let us Set up the database on Heroku:
 
