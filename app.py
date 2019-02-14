@@ -8,26 +8,42 @@ app = Flask(__name__)
 db = SQLAlchemy(app)
 
 class imagePost(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    image = db.Column(db.LargeBinary)
-    filename = db.Column(db.Text, nullable=True)
-    #hash_val = db.Column(db.String(32), nullable=True)
-    #body = db.Column(db.Text, nullable=False)
-    #category = db.Column(db.Text, nullable=True)
-    #pub_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    def __repr__(self):
-        return '<Post %r>' % self.id
+	id = db.Column(db.Integer, primary_key=True)
+	image = db.Column(db.LargeBinary)
+	filename = db.Column(db.Text, nullable=False)
+	extension = db.Column(db.String(5), nullable=False)
+	#hash_val = db.Column(db.String(32), nullable=True)
+	#body = db.Column(db.Text, nullable=False)
+	#category = db.Column(db.Text, nullable=True)
+	#pub_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+	def __repr__(self):
+		return '<Post %r>' % self.id
 
 def get_item(_id):
     obj = imagePost.query.filter_by(id=_id).first()
-    if obj == None:
-        print("NONETYPE AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
-        return None
     return obj
 
 def get_filename(name):
     return imagePost.query.filter_by(filename=name).first()
 
+def parse_filename(in_string):
+
+	ACCEPTED_EXTENSIONS = {'png', 'jpeg', 'gif'}
+	lst = in_string.split('.')
+
+	if (len(lst) != 2):
+		return None
+
+	filename = lst[0]
+	extension = lst[-1]
+
+	if(extension not in ACCEPTED_EXTENSIONS):
+		return None
+
+	return filename, extension
+
+	
+ 
 #Uncomment for deployment
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
 
@@ -48,21 +64,22 @@ def test_route():
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
-    if request.method == 'POST':
+	if request.method == 'POST':
+		file = request.files['file']
+		filename, extension = parse_filename(file.filename) #input sanitization
+		
+		if filename == None or extension == None:
+			return "oopsie woopsie you messed up"
 
-        file = request.files['file'] 
-        filename = file.filename
+		new_file = imagePost(image=file.read(), filename=filename, extension=extension)
 
-        new_file = imagePost(image=file.read(), filename=filename)
+		db.session.add(new_file)
+		db.session.commit()
 
-        db.session.add(new_file)
-        db.session.commit()
+		return file.filename + "uploaded!"
 
-        return file.filename
-
-    else:
-        return render_template('upload.html')
+	else:
+		return render_template('upload.html')
 
 if __name__ == "__main__":
-    app.run()
-
+	app.run()
