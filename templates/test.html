@@ -1,5 +1,5 @@
-hello world
-
-
-<img src="data:;base64,{{ image if image != None else 'NONE' }}" />
-
+<!doctype html5> 
+<html>
+	<h1>Now Showing picture: {{imagePost.filename}}</h1>
+	<img src="data:image/png;base64, {{ image if image != None else 'NONE' }}" />
+</html>

@@ -10,6 +10,7 @@ db = SQLAlchemy(app)
 class imagePost(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     image = db.Column(db.LargeBinary)
+    filename = db.Column(db.Text, nullable=True)
     #hash_val = db.Column(db.String(32), nullable=True)
     #body = db.Column(db.Text, nullable=False)
     #category = db.Column(db.Text, nullable=True)
@@ -26,6 +27,8 @@ def get_item(_id):
         return None
     return obj
 
+def get_filename(name):
+    return imagePost.query.filter_by(filename=name).first()
 
 #Uncomment for deployment
 #app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
@@ -41,19 +44,21 @@ def index():
 
 @app.route('/test')
 def test_route():
-    posts = get_item(1)
-    print (posts.id)
+    posts = get_filename('KEM.png')
     #print (posts.hash_val)
-    image = b64encode(posts.image) 
-    return render_template('test.html', posts=posts, image=image)
+    image = str(b64encode(posts.image))[2:-1]
+    print(image)
+    return render_template('test.html', imagePost=posts, image=image)
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
     if request.method == 'POST':
 
         file = request.files['file'] 
+        filename = file.filename
 
-        new_file = imagePost(image=file.read())
+        new_file = imagePost(image=file.read(), filename=filename)
+
         db.session.add(new_file)
         db.session.commit()
 
