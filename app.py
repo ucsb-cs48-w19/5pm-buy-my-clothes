@@ -47,13 +47,13 @@ def parse_filename(in_string):
 	return filename, extension
 
 
-
 #Uncomment for deployment
-#app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
 
-#Comment for local testing
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(os.getcwd() , 'database/app.db')
-print(app.config['SQLALCHEMY_DATABASE_URI'])
+#Uncomment for local testing
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(os.getcwd() , 'database/app.db')
+
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 
 @app.route('/')

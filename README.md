@@ -1,14 +1,13 @@
 # Shop My Style
 
 ## Project summary
-
 A web app for you to show off your style to others and browse new outfits to shop.
 
 ### Additional information about the project
 
 You can upload pictures of your outfit anytime, anywhere for others to view. You can browse photos from other users, find the brands you know you love or find all new styles to wear.
 
-https://caroline-shop-my-style.herokuapp.com/
+https://shop-my-style.herokuapp.com/
 
 ## Installation
 
@@ -16,16 +15,40 @@ https://caroline-shop-my-style.herokuapp.com/
 
 - Python3
 - pip
-- Flask
+- flask
+- flask_sqlalchemy
+- alembic
+- flask_script
+- flask_migrate
+- psycopg2
+- gunicorn
+
 
 ### Installation Steps
 
 Download the latest version of [Python3](https://www.python.org/downloads/) and [pip](https://pypi.org/project/pip/).
-Install Flask with the command `pip3 install flask`.
+
+Run the following commands
+```
+pip3 install flask flask_sqlalchemy alembic flask_script flask_migrate psycopg2 gunicorn --user
+```
+
+Clone our directory.
+Next, cd into your project directory and type `python3` and run the following commands
+
+```
+from app import db
+db.create_all()
+```
 
 ## Run application locally
-`FLASK_APP=hello.py flask run`
+`FLASK_APP=app.py flask run`
+
 `should be running on http://localhost:5000/ `
+
+## Run application on heroku
+
+Run the command `heroku addons:add heroku-postgresql:hobby-dev`
 
 ## Functionality
 
