@@ -59,7 +59,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 def index():
     return redirect(url_for('clothes'))
 
-@app.route('/browse')
+@app.route('/browse')ku
 def browse():
     return render_template('browse.html')
 
