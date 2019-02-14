@@ -43,10 +43,8 @@ def index():
 @app.route('/test')
 def test_route():
 	imagePost = get_item(1)
-    #print (posts.hash_val)
-    image = str(b64encode(imagePost.image))[2:-1] #string parsing for python
-    print(image)
-    return render_template('test.html', imagePost=imagePost, image=image)
+	image = str(b64encode(imagePost.image))[2:-1] #string parsing for python
+	return render_template('test.html', imagePost=imagePost, image=image)
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
