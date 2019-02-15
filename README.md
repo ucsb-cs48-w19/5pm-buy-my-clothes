@@ -97,7 +97,7 @@ From the home page, browse clothes by category, or search if you know what you'r
 
 ## Known Problems
 
-The web app doesn’t work...
+Commas in the description link currently break text box popups.
 
 ## Contributing
 
