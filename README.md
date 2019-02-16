@@ -1,14 +1,13 @@
 # Shop My Style
 
 ## Project summary
-
 A web app for you to show off your style to others and browse new outfits to shop.
 
 ### Additional information about the project
 
 You can upload pictures of your outfit anytime, anywhere for others to view. You can browse photos from other users, find the brands you know you love or find all new styles to wear.
 
-https://caroline-shop-my-style.herokuapp.com/
+https://shop-my-style.herokuapp.com/
 
 ## Installation
 
@@ -16,16 +15,81 @@ https://caroline-shop-my-style.herokuapp.com/
 
 - Python3
 - pip
-- Flask
+- flask
+- flask_sqlalchemy
+- alembic
+- flask_script
+- flask_migrate
+- psycopg2
+- gunicorn
+
 
 ### Installation Steps
 
 Download the latest version of [Python3](https://www.python.org/downloads/) and [pip](https://pypi.org/project/pip/).
-Install Flask with the command `pip3 install flask`.
+
+Run the following commands
+```
+pip3 install flask flask_sqlalchemy alembic flask_script flask_migrate psycopg2 gunicorn --user
+```
+
+Clone our directory
+
+```git clone git@github.com:ucsb-cs48-w19/5pm-buy-my-clothes.git```
+
+Next, cd into your project directory 
+
+```cd 5pm-buy-my-clothes```
 
 ## Run application locally
-`FLASK_APP=hello.py flask run`
+
+Open a python shell 
+`python3` 
+
+Create a local database
+```
+from app import db
+db.create_all()
+```
+Run app locally
+
+`FLASK_APP=app.py flask run`
+
 `should be running on http://localhost:5000/ `
+
+## Run application on heroku
+
+Login to Heroku 
+
+`heroku login` 
+
+Create a new Heroku app 
+
+```heroku create APP_NAME_HERE```
+
+Lanch Heroku app:
+
+```git push heroku master```
+
+Now let us Set up the database on Heroku:
+
+Create a Postgresql database by running the command 
+
+`heroku addons:add heroku-postgresql:hobby-dev`
+
+Now we need to initialze a table by running the following commands:
+
+`heroku run python3`
+
+`from app import db`
+
+`db.create_all()`
+
+You can exit the heroku python shell with the command`exit()`
+
+Your app should be running on 
+
+`https://APP_NAME_HERE.herokuapp.com`
 
 ## Functionality
 
@@ -33,7 +97,7 @@ From the home page, browse clothes by category, or search if you know what you'r
 
 ## Known Problems
 
-The web app doesn’t work...
+Commas in the description link currently break text box popups.
 
 ## Contributing
 
