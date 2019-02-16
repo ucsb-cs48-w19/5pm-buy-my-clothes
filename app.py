@@ -1,4 +1,5 @@
 import os
+from base64 import b64encode
 from datetime import datetime
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
