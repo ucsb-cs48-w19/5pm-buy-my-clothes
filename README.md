@@ -33,22 +33,63 @@ Run the following commands
 pip3 install flask flask_sqlalchemy alembic flask_script flask_migrate psycopg2 gunicorn --user
 ```
 
-Clone our directory.
-Next, cd into your project directory and type `python3` and run the following commands
+Clone our directory
 
+```git clone git@github.com:ucsb-cs48-w19/5pm-buy-my-clothes.git```
+
+Next, cd into your project directory 
+
+```cd 5pm-buy-my-clothes```
+
+## Run application locally
+
+Open a python shell 
+`python3` 
+
+Create a local database
 ```
 from app import db
 db.create_all()
 ```
+Run app locally
 
-## Run application locally
 `FLASK_APP=app.py flask run`
 
 `should be running on http://localhost:5000/ `
 
 ## Run application on heroku
 
-Run the command `heroku addons:add heroku-postgresql:hobby-dev`
+Login to Heroku 
+
+`heroku login` 
+
+Create a new Heroku app 
+
+```heroku create APP_NAME_HERE```
+
+Lanch Heroku app:
+
+```git push heroku master```
+
+Now let us Set up the database on Heroku:
+
+Create a Postgresql database by running the command 
+
+`heroku addons:add heroku-postgresql:hobby-dev`
+
+Now we need to initialze a table by running the following commands:
+
+`heroku run python3`
+
+`from app import db`
+
+`db.create_all()`
+
+You can exit the heroku python shell with the command`exit()`
+
+Your app should be running on 
+
+`https://APP_NAME_HERE.herokuapp.com`
 
 ## Functionality
 
@@ -56,7 +97,7 @@ From the home page, browse clothes by category, or search if you know what you'r
 
 ## Known Problems
 
-The web app doesn’t work...
+Commas in the description link currently break text box popups.
 
 ## Contributing
 
