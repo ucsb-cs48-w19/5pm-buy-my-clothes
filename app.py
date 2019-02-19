@@ -38,8 +38,8 @@ def parse_filename(in_string):
 	if (len(lst) != 2):
 		return None
 
-	filename = lst[0]
-	extension = lst[-1]
+	filename = lst[0].lower()
+	extension = lst[-1].lower()
 
 	if(extension not in ACCEPTED_EXTENSIONS):
 		return None
