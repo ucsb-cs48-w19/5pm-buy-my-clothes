@@ -66,28 +66,31 @@ def browse():
 
 @app.route('/clothes')
 def clothes():
-    postList = get_all_items()
+	postList = get_all_items()
 
-    imageList = []
-    for post in postList:
-        image = str(b64encode(post.image))[2:-1]
-        image_post_tuple = (post, image)
-        imageList.append(image_post_tuple)
+	imageList = []
+	for post in postList:
+		image = str(b64encode(post.image))[2:-1]
+		category_link = ''
+		for i in range(len(post.body.split())):
+			category_link += post.category.split()[i] + ';' + post.body.split()[i] + ' '
+			print(category_link)
+		image_post_tuple = (post, image, category_link.strip())
+		imageList.append(image_post_tuple)
 
-    col1 = []
-    col2 = []
-    col3 = []
+	col1 = []
+	col2 = []
+	col3 = []
 
-    for i in range(len(imageList)):
-        if i % 3 == 0:
-            col1.append(imageList[i])
-        elif i % 3 == 1:
-            col2.append(imageList[i])
-        elif i % 3 == 2:
-            col3.append(imageList[i])
+	for i in range(len(imageList)):
+		if i % 3 == 0:
+			col1.append(imageList[i])
+		elif i % 3 == 1:
+			col2.append(imageList[i])
+		elif i % 3 == 2:
+			col3.append(imageList[i])
 
-
-    return render_template('clothes.html', pic_col1=col1, pic_col2=col2, pic_col3=col3)
+	return render_template('clothes.html', pic_col1=col1, pic_col2=col2, pic_col3=col3)
 
 @app.route('/test')
 def test_route():
@@ -105,12 +108,21 @@ def upload():
 
 		if filename == None or extension == None:
 			return "oopsie woopsie you messed up"
-		#body = 'This is the body'
-		#category = 'category'
-		body = request.form['description']
-		category = request.form['category']
+
+		count = 0
+		key = 'category-link-'
+		links = ''
+		while request.form.get(key + str(count)):
+			link = request.form.get(key + str(count))
+			print(link)
+			links += link + ' '
+			count += 1
+
+		body = links.strip()
+		category = request.form['category'].strip()
 		print('body', body)
 		print('category', category)
+
 		new_file = imagePost(image=file.read(), filename=filename, extension=extension, body=body, category=category)
 
 		db.session.add(new_file)
