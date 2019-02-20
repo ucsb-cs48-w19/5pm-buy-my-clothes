@@ -4,6 +4,8 @@
 {% block title %}Shop My Style{% endblock %}
 {% block description %}Click on the photos to shop the look{% endblock %}
 
+
+
 {% block content %}
 
 <!-- Photo Grid -->
@@ -11,7 +13,7 @@
   <div class="w3-third w3-container w3-margin-bottom">
   {% for pic in pic_col1 %}
   <a href="#" class="pop">
-    <img src="data:image/{{pic[0].extension}};base64,{{pic[1]}}" style="width:100%" class="w3-hover-opacity" onclick="popup('{{pic[0].body}}')">
+    <img src="data:image/{{pic[0].extension}};base64,{{pic[1]}}" style="width:100%" class="w3-hover-opacity img-thumbail" onclick="popup('{{pic[0].body}}')">
   </a>
 
   {% endfor %}
@@ -20,7 +22,7 @@
   <div class="w3-third w3-container w3-margin-bottom">
   {% for pic in pic_col2 %}
   <a href="#" class="pop">
-    <img src="data:image/{{pic[0].extension}};base64, {{pic[1]}}" style="width:100%" class="w3-hover-opacity" onclick="popup('{{pic[0].body}}')">
+    <img src="data:image/{{pic[0].extension}};base64, {{pic[1]}}" style="width:100%" class="w3-hover-opacity img-thumbail" onclick="popup('{{pic[0].body}}')">
   </a>
   {% endfor %}
   </div>
@@ -28,7 +30,7 @@
   <div class="w3-third w3-container w3-margin-bottom">
   {% for pic in pic_col3 %}
   <a href="#" class="pop">
-    <img src="data:image/{{pic[0].extension}};base64, {{pic[1]}}" style="width:100%" class="w3-hover-opacity" onclick="popup('{{pic[0].body}}')">
+    <img src="data:image/{{pic[0].extension}};base64, {{pic[1]}}" style="width:100%" class="w3-hover-opacity img-thumbail" onclick="popup('{{pic[0].body}}')">
   </a>
   {% endfor %}
   </div>
@@ -39,24 +41,24 @@
 $(function() {
     $('.pop').on('click', function() {
         $('.imagepreview').attr('src', $(this).find('img').attr('src'));
-        $('#imagemodal').modal('show');   
-    });     
+        $('#imagemodal').modal('show');
+    });
 });
 </script>
 
 <!--Hidden modal background-->
 <div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog" data-dismiss="modal">
-    <div class="modal-content"  >              
+    <div class="modal-content"  >
       <div class="modal-body">
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
            <img src="" class="imagepreview" style="width: 100%;" >
-      </div> 
+      </div>
    <div class="modal-footer">
      <div class="col-xs-12">
          <p class="text-left">1. line of description<br>2. line of description <br>3. line of description</p>
      </div>
-   </div>         
+   </div>
  </div>
 </div>
 

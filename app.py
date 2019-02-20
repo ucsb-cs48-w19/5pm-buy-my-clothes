@@ -52,8 +52,7 @@ def parse_filename(in_string):
 
 #Uncomment for local testing
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(os.getcwd() , 'database/app.db')
-
-
+print(app.config['SQLALCHEMY_DATABASE_URI'])
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 
 @app.route('/')
@@ -63,6 +62,10 @@ def index():
 @app.route('/browse')
 def browse():
     return render_template('browse.html')
+
+@app.route('/browsemens')
+def browsemens():
+	return render_template('browsemens.html')
 
 @app.route('/clothes')
 def clothes():
