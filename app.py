@@ -1,23 +1,46 @@
 import os
+import string
+import random
 from base64 import b64encode
 from datetime import datetime
-from flask import Flask, render_template, request, url_for, redirect
+from flask import Flask, render_template, request, url_for, redirect, session
 from flask_sqlalchemy import SQLAlchemy
+from passlib.hash import bcrypt
 
 app = Flask(__name__)
 db = SQLAlchemy(app)
 
+#DON'T TOUCH THIS LINE OF CODE WE NEED IT
+app.secret_key = ''.join(random.choices(string.ascii_letters, k=16))
+
+
+###################################
+#       TABLES IN OUR DATABASE    #
+###################################
+
 class imagePost(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
-	image = db.Column(db.LargeBinary)
-	filename = db.Column(db.Text, nullable=False)
+
+	image     = db.Column(db.LargeBinary)
+	filename  = db.Column(db.Text, nullable=False)
 	extension = db.Column(db.String(5), nullable=False)
-	#hash_val = db.Column(db.String(32), nullable=True)
-	body = db.Column(db.Text, nullable=False)
-	category = db.Column(db.Text, nullable=True)
-	pub_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+	
+	body      = db.Column(db.Text, nullable=False)
+	category  = db.Column(db.Text, nullable=True)
+
 	def __repr__(self):
-		return '<Post %r>' % self.id
+		return '<Post %r, Filename %s, extension %s>' % self.id, self.filename, self.extension
+
+
+class User(db.Model):
+	id = db.Column(db.Integer, primary_key=True)
+
+	username = db.Column(db.String(15), nullable=False, unique=True)
+	password = db.Column(db.String(300), nullable=False)
+
+###################################
+#  HELPER FUNCTIONS FOR DB ACCESS #
+###################################
 
 def get_item(_id):
     obj = imagePost.query.filter_by(id=_id).first()
@@ -46,9 +69,14 @@ def parse_filename(in_string):
 
 	return filename, extension
 
+def user_in_db(username):
+	return User.query.count() == 1
+
+
 
 #Determines path to database
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL') or 'sqlite:///' + os.path.join(os.getcwd() , 'database/app.db')
+
 
 #Disables useless warnings
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
@@ -128,5 +156,40 @@ def upload():
 	else:
 		return render_template('upload.html')
 
+@app.route('/login', methods=['GET', 'POST'])
+def login(): 
+	if request.method == 'POST':
+		pass
+	return ''
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+	if request.method == 'POST':
+
+		username = request.form['username']
+		password = bcrypt.encrypt(request.form['password'])
+
+		#Add user to database
+		if not user_in_db(username):
+
+			new_user = User(username=username, password=password)
+			db.session.add(new_user)
+			db.session.commit()
+
+			return 'Account created for user : ' + username + '<br>With password : ' + password
+
+		else: 
+			return 'You\'re already in here silly!'
+
+	else:
+		return render_template('register.html')
+
+
 if __name__ == "__main__":
+	#Clears the DB on init so changes to db class don't create issues
+	#NOTE: Since the flask app should only be ran once this won't continuously clear the db
+	db.drop_all()
+	db.create_all()
+
+	#Runs the app
 	app.run()
