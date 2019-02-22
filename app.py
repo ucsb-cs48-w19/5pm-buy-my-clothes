@@ -36,24 +36,21 @@ def parse_filename(in_string):
 	lst = in_string.split('.')
 
 	if (len(lst) != 2):
-		return None
+		return None, None
 
-	filename = lst[0]
-	extension = lst[-1]
+	filename = lst[0].lower()
+	extension = lst[-1].lower()
 
 	if(extension not in ACCEPTED_EXTENSIONS):
-		return None
+		return None, None
 
 	return filename, extension
 
 
-#Uncomment for deployment
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
+#Determines path to database
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL') or 'sqlite:///' + os.path.join(os.getcwd() , 'database/app.db')
 
-#Uncomment for local testing
-#app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(os.getcwd() , 'database/app.db')
-
-
+#Disables useless warnings
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 
 @app.route('/')
@@ -66,36 +63,35 @@ def browse():
 
 @app.route('/clothes')
 def clothes():
-    postList = get_all_items()
+	postList = get_all_items()
 
-    imageList = []
-    for post in postList:
-        image = str(b64encode(post.image))[2:-1]
-        image_post_tuple = (post, image)
-        imageList.append(image_post_tuple)
+	#Makes list of all images
+	imageList = []
+	for post in postList:
+		image = str(b64encode(post.image))[2:-1]
 
-    col1 = []
-    col2 = []
-    col3 = []
+		#TODO: Make long string tuples with (descriptor, link) pair
+		#TODO: Put into separate function
+		category_link = ''
+		for i in range(len(post.body.split())):
+			category_link += post.category.split()[i] + ';' + post.body.split()[i] + ' '
+			print(category_link)
+		image_post_tuple = (post, image, category_link.strip())
+		imageList.append(image_post_tuple)
 
-    for i in range(len(imageList)):
-        if i % 3 == 0:
-            col1.append(imageList[i])
-        elif i % 3 == 1:
-            col2.append(imageList[i])
-        elif i % 3 == 2:
-            col3.append(imageList[i])
+	col1 = []
+	col2 = []
+	col3 = []
 
+	for i in range(len(imageList)):
+		if i % 3 == 0:
+			col1.append(imageList[i])
+		elif i % 3 == 1:
+			col2.append(imageList[i])
+		elif i % 3 == 2:
+			col3.append(imageList[i])
 
-    return render_template('clothes.html', pic_col1=col1, pic_col2=col2, pic_col3=col3)
-
-@app.route('/test')
-def test_route():
-	imagePosts = get_all_items()
-	for i in range(len(imagePosts)):
-
-		imagePosts[i].image = str(b64encode(imagePosts[i].image))[2:-1] #string parsing for python
-	return render_template('test.html', imagePosts=imagePosts)
+	return render_template('clothes.html', pic_col1=col1[::-1], pic_col2=col2[::-1], pic_col3=col3[::-1])
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
@@ -103,14 +99,25 @@ def upload():
 		file = request.files['file']
 		filename, extension = parse_filename(file.filename) #input sanitization
 
+		#TODO: Make 404 or Error page template
 		if filename == None or extension == None:
 			return "oopsie woopsie you messed up"
-		#body = 'This is the body'
-		#category = 'category'
-		body = request.form['description']
-		category = request.form['category']
+
+		#TODO: Make this cleaner/less hackier
+		count = 0
+		key = 'category-link-'
+		links = ''
+		while request.form.get(key + str(count)):
+			link = request.form.get(key + str(count))
+			print(link)
+			links += link + ' '
+			count += 1
+
+		body = links.strip()
+		category = request.form['category'].strip()
 		print('body', body)
 		print('category', category)
+
 		new_file = imagePost(image=file.read(), filename=filename, extension=extension, body=body, category=category)
 
 		db.session.add(new_file)
