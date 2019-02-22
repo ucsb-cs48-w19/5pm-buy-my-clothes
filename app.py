@@ -5,9 +5,10 @@ from base64 import b64encode
 from datetime import datetime
 from flask import Flask, render_template, request, url_for, redirect, session, flash
 from flask_sqlalchemy import SQLAlchemy
-from passlib.hash import bcrypt
+from flask_bcrypt import Bcrypt
 
 app = Flask(__name__)
+bcrypt = Bcrypt(app)
 db = SQLAlchemy(app)
 
 #DON'T TOUCH THIS LINE OF CODE WE NEED IT
@@ -127,55 +128,60 @@ def clothes():
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
-	if request.method == 'POST':
-		file = request.files['file']
-		filename, extension = parse_filename(file.filename) #input sanitization
+	#Checks if the user is logged in to upload photos
+	if 'username' in session:
+		if request.method == 'POST':
+			file = request.files['file']
+			filename, extension = parse_filename(file.filename) #input sanitization
 
-		#TODO: Make 404 or Error page template
-		if filename == None or extension == None:
-			return "oopsie woopsie you messed up"
+			#TODO: Make 404 or Error page template
+			if filename == None or extension == None:
+				return "oopsie woopsie you messed up"
 
-		#TODO: Make this cleaner/less hackier
-		count = 0
-		key = 'category-link-'
-		links = ''
-		while request.form.get(key + str(count)):
-			link = request.form.get(key + str(count))
-			print(link)
-			links += link + ' '
-			count += 1
+			#TODO: Make this cleaner/less hackier
+			count = 0
+			key = 'category-link-'
+			links = ''
+			while request.form.get(key + str(count)):
+				link = request.form.get(key + str(count))
+				print(link)
+				links += link + ' '
+				count += 1
 
-		body = links.strip()
-		category = request.form['category'].strip()
-		print('body', body)
-		print('category', category)
+			body = links.strip()
+			category = request.form['category'].strip()
+			print('body', body)
+			print('category', category)
 
-		new_file = imagePost(image=file.read(), filename=filename, extension=extension, body=body, category=category)
+			new_file = imagePost(image=file.read(), filename=filename, extension=extension, body=body, category=category)
 
-		db.session.add(new_file)
-		db.session.commit()
+			db.session.add(new_file)
+			db.session.commit()
 
-		return redirect(url_for('clothes'))
+			return redirect(url_for('clothes'))
+
+		else:
+			return render_template('upload.html')
 
 	else:
-		return render_template('upload.html')
+		return 'Please login to access'
 
 @app.route('/login', methods=['GET', 'POST'])
 def login(): 
 	if request.method == 'POST':
 
 		username = request.form['username']
-		password = bcrypt.encrypt(request.form['password'])
+		password = request.form['password']
 
 		if not user_in_db(username):
 			return "Error: User not found"
 
-		if password != user_password(username):
-			return "Error: Wrong password"
+		if not bcrypt.check_password_hash(user_password(username),password):
+			return "Password given : " + password + '<br>Password Expected : ' + user_password(username) 
 
 		else: 
 			session['username'] = 'username'
-			return redirect(url_for('uploads.html'))
+			return redirect(url_for('clothes'))
 
 	return render_template('login.html')
 
@@ -185,7 +191,7 @@ def register():
 	if request.method == 'POST':
 
 		username = request.form['username']
-		password = bcrypt.encrypt(request.form['password'])
+		password = bcrypt.generate_password_hash(request.form['password']).decode('utf-8')
 
 		#Add user to database
 		if not user_in_db(username):
