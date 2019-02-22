@@ -5,3 +5,6 @@ flask_script
 flask_migrate
 psycopg2
 gunicorn
+bcrypt
+passlib
+wtforms

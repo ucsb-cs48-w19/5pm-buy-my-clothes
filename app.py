@@ -3,7 +3,7 @@ import string
 import random
 from base64 import b64encode
 from datetime import datetime
-from flask import Flask, render_template, request, url_for, redirect, session
+from flask import Flask, render_template, request, url_for, redirect, session, flash
 from flask_sqlalchemy import SQLAlchemy
 from passlib.hash import bcrypt
 
@@ -38,6 +38,7 @@ class User(db.Model):
 	username = db.Column(db.String(15), nullable=False, unique=True)
 	password = db.Column(db.String(300), nullable=False)
 
+
 ###################################
 #  HELPER FUNCTIONS FOR DB ACCESS #
 ###################################
@@ -71,6 +72,9 @@ def parse_filename(in_string):
 
 def user_in_db(username):
 	return User.query.count() == 1
+
+def user_password(username):
+	return User.query.filter_by(username=username).first().password
 
 
 
@@ -159,11 +163,25 @@ def upload():
 @app.route('/login', methods=['GET', 'POST'])
 def login(): 
 	if request.method == 'POST':
-		pass
-	return ''
+
+		username = request.form['username']
+		password = bcrypt.encrypt(request.form['password'])
+
+		if not user_in_db(username):
+			return "Error: User not found"
+
+		if password != user_password(username):
+			return "Error: Wrong password"
+
+		else: 
+			session['username'] = 'username'
+			return redirect(url_for('uploads.html'))
+
+	return render_template('login.html')
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+	#form = RegistrationForm(request.form)
 	if request.method == 'POST':
 
 		username = request.form['username']
