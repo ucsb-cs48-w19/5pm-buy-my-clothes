@@ -36,24 +36,21 @@ def parse_filename(in_string):
 	lst = in_string.split('.')
 
 	if (len(lst) != 2):
-		return None
+		return None, None
 
-	filename = lst[0]
-	extension = lst[-1]
+	filename = lst[0].lower()
+	extension = lst[-1].lower()
 
 	if(extension not in ACCEPTED_EXTENSIONS):
-		return None
+		return None, None
 
 	return filename, extension
 
 
-#Uncomment for deployment
-#app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
+#Determines path to database
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL') or 'sqlite:///' + os.path.join(os.getcwd() , 'database/app.db')
 
-#Uncomment for local testing
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(os.getcwd() , 'database/app.db')
-
-
+#Disables useless warnings
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 
 @app.route('/')
@@ -68,9 +65,13 @@ def browse():
 def clothes():
 	postList = get_all_items()
 
+	#Makes list of all images
 	imageList = []
 	for post in postList:
 		image = str(b64encode(post.image))[2:-1]
+
+		#TODO: Make long string tuples with (descriptor, link) pair
+		#TODO: Put into separate function
 		category_link = ''
 		for i in range(len(post.body.split())):
 			category_link += post.category.split()[i] + ';' + post.body.split()[i] + ' '
@@ -90,15 +91,7 @@ def clothes():
 		elif i % 3 == 2:
 			col3.append(imageList[i])
 
-	return render_template('clothes.html', pic_col1=col1, pic_col2=col2, pic_col3=col3)
-
-@app.route('/test')
-def test_route():
-	imagePosts = get_all_items()
-	for i in range(len(imagePosts)):
-
-		imagePosts[i].image = str(b64encode(imagePosts[i].image))[2:-1] #string parsing for python
-	return render_template('test.html', imagePosts=imagePosts)
+	return render_template('clothes.html', pic_col1=col1[::-1], pic_col2=col2[::-1], pic_col3=col3[::-1])
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
@@ -106,9 +99,11 @@ def upload():
 		file = request.files['file']
 		filename, extension = parse_filename(file.filename) #input sanitization
 
+		#TODO: Make 404 or Error page template
 		if filename == None or extension == None:
 			return "oopsie woopsie you messed up"
 
+		#TODO: Make this cleaner/less hackier
 		count = 0
 		key = 'category-link-'
 		links = ''
