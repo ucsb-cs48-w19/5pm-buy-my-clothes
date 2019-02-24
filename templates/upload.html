@@ -5,16 +5,76 @@
 
 {% block content %}
 
-<form method=post action="/upload" enctype=multipart/form-data>
+<form method=post action="/upload" id="upload-form" enctype=multipart/form-data>
 
 <div class="form-group">
     <textarea class="form-control" name="description" placeholder="Description" id="exampleFormControlTextarea1" rows="3"></textarea>
  </div>
 
-<input class="form-control" type="text" name="category" placeholder="Categories">
+ <div class="form-category-links"></div>
+
+<input class="form-control" id="form-category" type="text" name="category" placeholder="Categories">
 
     <input type=file name=file>
     <input type=submit value=Upload>
 </form>
+
+<!--Script that autocompletes categories-->
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+$(function() {
+  var categories = [
+    "accessories",
+    "bags",
+    "coats",
+    "dress",
+    "jeans",
+    "jewelry",
+    "pants",
+    "rompers",
+    "shirts",
+    "shirtsandblouses",
+    "shoes",
+    "shorts",
+    "skirts",
+    "sweaters",
+    "swimwear",
+    "tshirtsandtanks"
+  ];
+
+  $("#form-category").autocomplete({
+    source: categories
+  });
+
+  var count = 0;
+  var endText = "";
+  $("#form-category").on("keyup", function(e) {
+    if (e.which == 13) {
+      addCategory();
+    }
+  });
+
+  $("#form-category").on("input", function() {
+    addCategory();
+  });
+
+  function addCategory() {
+    var text = $("#form-category").val().replace(/\s/g, "");
+    if (jQuery.inArray(text, categories) > -1) {
+      $("#form-category").val("");
+      endText += text + " ";
+      $(".form-category-links").append("<div class=\"form-category-link\" name=\"" + count + "\" >#" + text + " <input type=\"text\" name=\"category-link-" + count + "\" placeholder=\"Link\"></div>");
+      count += 1;
+    }
+  }
+
+  document.getElementById("upload-form").onsubmit = function() {
+    console.log(endText);
+    $("#form-category").val(endText);
+  };
+});
+</script>
 
 {% endblock %}

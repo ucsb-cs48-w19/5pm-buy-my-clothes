@@ -50,10 +50,11 @@ Create a local database
 ```
 from app import db
 db.create_all()
+exit()
 ```
 Run app locally
 
-`FLASK_APP=app.py flask run`
+`python3 app.py`
 
 `should be running on http://localhost:5000/ `
 
