@@ -140,8 +140,8 @@ def clothes():
 			col3.append(imageList[i])
 
 	col1 = col1[::-1]
-    col2 = col2[::-1]
-    col3 = col3[::-1]
+	col2 = col2[::-1]
+	col3 = col3[::-1]
 
 	return render_template('clothes.html', pic_col1=col1[::-1], pic_col2=col2[::-1], pic_col3=col3[::-1])
 
