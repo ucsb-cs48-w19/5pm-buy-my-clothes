@@ -164,11 +164,11 @@ def upload():
 			#TODO: Make this cleaner/less hackier
 			count = 0
 			key = 'category-link-'
-			links = ''
+			links = []
 			while request.form.get(key + str(count)):
 				link = request.form.get(key + str(count))
 				print(link)
-				links += link + ' '
+				links.append(link)
 				count += 1
 
 
