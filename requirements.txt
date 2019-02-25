@@ -3,8 +3,9 @@ flask
 flask_sqlalchemy
 flask_script
 flask_migrate
+flask_bcrypt
 psycopg2
 gunicorn
-bcrypt
 passlib
 wtforms
+pytest

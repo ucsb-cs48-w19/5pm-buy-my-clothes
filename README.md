@@ -1,5 +1,12 @@
 # Shop My Style
 
+# python-travis-ci-mvp
+A minimum viable product for demonstrating testing of Python code with Travis-CI
+
+<a href="https://travis-ci.org/ucsb-cs48-w19/5pm-buy-my-clothes">
+<img src="https://travis-ci.org/ucsb-cs48-w19/5pm-buy-my-clothes.svg?branch=master" alt="Build Status">
+</a>
+
 ## Project summary
 A web app for you to show off your style to others and browse new outfits to shop.
 
@@ -30,7 +37,7 @@ Download the latest version of [Python3](https://www.python.org/downloads/) and 
 
 Run the following commands
 ```
-pip3 install flask flask_sqlalchemy alembic flask_script flask_migrate psycopg2 gunicorn --user
+pip3 install flask flask_sqlalchemy alembic flask_script flask_migrate flask_bcrypt psycopg2 gunicorn --user
 ```
 
 Clone our directory
