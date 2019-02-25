@@ -151,6 +151,7 @@ def clothes():
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
 	#Checks if the user is logged in to upload photos
+	print(session)
 	if 'username' in session:
 		if request.method == 'POST':
 			file = request.files['file']
