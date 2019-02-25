@@ -1,5 +1,12 @@
 # Shop My Style
 
+# python-travis-ci-mvp
+A minimum viable product for demonstrating testing of Python code with Travis-CI
+
+<a href="https://travis-ci.org/ucsb-cs48-w19/5pm-buy-my-clothes">
+<img src="https://travis-ci.org/ucsb-cs48-w19/5pm-buy-my-clothes.svg?branch=master" alt="Build Status">
+</a>
+
 ## Project summary
 A web app for you to show off your style to others and browse new outfits to shop.
 
