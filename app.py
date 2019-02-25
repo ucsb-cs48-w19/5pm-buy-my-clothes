@@ -111,6 +111,10 @@ def index():
 def browse():
     return render_template('browse.html')
 
+@app.route('/browsemens')
+def browsemens():
+	return render_template('browsemens.html')
+
 @app.route('/clothes')
 def clothes():
 	postList = get_all_items()
