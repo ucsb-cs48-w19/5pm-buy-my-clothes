@@ -28,7 +28,7 @@ class imagePost(db.Model):
 	filename  = db.Column(db.Text, nullable=False)
 	extension = db.Column(db.String(5), nullable=False)
 
-	links      = db.Column(db.Text, nullable=False)
+	links     = db.Column(db.Text, nullable=False)
 	category  = db.Column(db.Text, nullable=True)
 
 	def __repr__(self):
