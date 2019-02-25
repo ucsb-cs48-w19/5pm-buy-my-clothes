@@ -12,7 +12,9 @@ bcrypt = Bcrypt(app)
 db = SQLAlchemy(app)
 
 #DON'T TOUCH THIS LINE OF CODE WE NEED IT
-app.secret_key = ''.join(random.choices(string.ascii_letters, k=16))
+
+#app.secret_key = ''.join(random.choices(string.ascii_letters, k=16))
+app.secret_key = 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'
 
 
 ###################################
@@ -77,8 +79,8 @@ def parse_filename(in_string):
     if (len(lst) != 2):
             return None, None
 
-    filename = lst[0]
-    extension = lst[-1]
+    filename = lst[0].lower()
+    extension = lst[-1].lower()
 
     if(extension not in ACCEPTED_EXTENSIONS):
             return None, None
@@ -87,7 +89,7 @@ def parse_filename(in_string):
 
 
 def user_in_db(username):
-	return User.query.count() == 1
+	return User.query.filter_by(username=username).count() == 1
 
 def user_password(username):
 	return User.query.filter_by(username=username).first().password
