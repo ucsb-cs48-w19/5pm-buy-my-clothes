@@ -208,10 +208,15 @@ def login():
 			return "Password given : " + password + '<br>Password Expected : ' + user_password(username)
 
 		else:
-			session['username'] = 'username'
+			session['username'] = username
 			return redirect(url_for('clothes'))
 
 	return render_template('login.html')
+
+@app.route('/logout')
+def logout():
+	session.pop('username', None)
+	return redirect(url_for('clothes'))
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
