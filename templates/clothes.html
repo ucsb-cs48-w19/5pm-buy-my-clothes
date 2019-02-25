@@ -54,7 +54,11 @@ $(function() {
         for (i in links) {
           var category = links[i].split(';')[0];
           var link = links[i].split(';')[1];
-          $('.text-left').append('<div><p><b>' + category + ': </b><a href=\"//' + link + '\" target=\"_blank\">' + link + '</a></p></div>');
+          if (link.toLowerCase().startsWith('http')) {
+            $('.text-left').append('<div><p><b>' + category + ': </b><a href=\"' + link + '\" target=\"_blank\">' + link + '</a></p></div>');
+          } else {
+            $('.text-left').append('<div><p><b>' + category + ': </b><a href=\"//' + link + '\" target=\"_blank\">' + link + '</a></p></div>');
+          }
         }
         $('#imagemodal').modal('show');
     });
