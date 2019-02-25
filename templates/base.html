@@ -52,7 +52,7 @@ ch">
       {% if session['username'] %}
         <li><a href="{{ url_for('logout') }}">Hi {{ session.username }}</a></li>
       {% else %}
-        <li><a href="{{ url_for('register') }}"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+        <li><a href="{{ url_for('signup') }}"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
         <li><a href="{{ url_for('login') }}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
       {% endif %}
     </ul>

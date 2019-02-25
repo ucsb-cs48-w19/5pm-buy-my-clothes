@@ -66,6 +66,26 @@ $(function() {
     }
   }
 
+  //Copied from https://stackoverflow.com/questions/585396/how-to-prevent-enter-keypress-to-submit-a-web-form
+  //Fixes issue where cliking enter on an input field submits the form
+  $(function() {
+    var keyStop = {
+    8: ":not(input:text, textarea, input:file, input:password)", //stop backspace = back
+    13: "input:text, input:password", //stop enter = submit
+
+    end: null
+  };
+
+    $(document).bind("keydown", function(event) {
+      var selector = keyStop[event.which];
+
+      if(selector !== undefined && $(event.target).is(selector)) {
+        event.preventDefault(); //stop event
+      }
+      return true;
+    });
+  });
+
   document.getElementById("upload-form").onsubmit = function() {
     console.log(endText);
     $("#form-category").val(endText);

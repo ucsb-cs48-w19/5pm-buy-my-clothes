@@ -49,7 +49,6 @@ $(function() {
         $('.imagepreview').attr('src', $(this).find('img').attr('src'));
         var body = $(this).find('data').attr('value')
         var links = body.split(' ');
-        console.log(links);
         $('.text-left').empty();
         for (i in links) {
           var category = links[i].split(';')[0];
