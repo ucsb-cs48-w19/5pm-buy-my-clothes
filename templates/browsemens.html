@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+
+{% block title %}BROWSE{% endblock %}
+{% block description %}Browse by Category{% endblock %}
+
+{% block photogrid %}.w3-row-padding img {margin-bottom: 12px} {% endblock %}
+
+{% block content %}
+
+<!-- Photo Grid -->
+<div class="w3-row-padding" id="myGrid" style="margin-bottom:128px">
+  <div class="w3-third w3-container w3-margin-bottom">
+    <img src="/static/browsepage/mens-accessories.JPG" style="width:100%" class="w3-hover-opacity">
+    <img src="/static/browsepage/mens-shirts.JPG" style="width:100%" class="w3-hover-opacity">
+    <img src="/static/browsepage/mens-swim.JPG" style="width:100%" class="w3-hover-opacity">
+  </div>
+
+  <div class="w3-third w3-container w3-margin-bottom">
+    <img src="/static/browsepage/mens-pants.JPG" style="width:100%" class="w3-hover-opacity">
+    <img src="/static/browsepage/mens-shoes.JPG" style="width:100%" class="w3-hover-opacity">
+    <img src="/static/browsepage/mens-sweaters.JPG" style="width:100%" class="w3-hover-opacity">
+  </div>
+
+  <div class="w3-third w3-container w3-margin-bottom">
+    <img src="/static/browsepage/mens-coats.JPG" style="width:100%" class="w3-hover-opacity">
+    <img src="/static/browsepage/mens-shorts.JPG" style="width:100%" class="w3-hover-opacity">
+    <img src="/static/browsepage/mens-tshirts.JPG" style="width:100%" class="w3-hover-opacity">
+  </div>
+</div>
+
+{% endblock %}
+
+<!-- End Page Content -->

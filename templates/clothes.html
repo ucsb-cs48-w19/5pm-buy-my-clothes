@@ -4,6 +4,8 @@
 {% block title %}Shop My Style{% endblock %}
 {% block description %}Click on the photos to shop the look{% endblock %}
 
+
+
 {% block content %}
 
 <!-- Photo Grid -->
@@ -11,7 +13,7 @@
   <div class="w3-third w3-container w3-margin-bottom">
   {% for pic in pic_col1 %}
   <a href="#" class="pop">
-    <img src="data:image/{{pic[0].extension}};base64,{{pic[1]}}" alt="{{pic[2]}}" style="width:100%" class="w3-hover-opacity">
+    <img src="data:image/{{pic[0].extension}};base64,{{pic[1]}}" alt="{{pic[2]}}" style="width:100%" class="w3-hover-opacity img-thumbail">
   </a>
 
   {% endfor %}
@@ -20,7 +22,7 @@
   <div class="w3-third w3-container w3-margin-bottom">
   {% for pic in pic_col2 %}
   <a href="#" class="pop">
-    <img src="data:image/{{pic[0].extension}};base64, {{pic[1]}}" alt="{{pic[2]}}" style="width:100%" class="w3-hover-opacity">
+    <img src="data:image/{{pic[0].extension}};base64, {{pic[1]}}" alt="{{pic[2]}}" style="width:100%" class="w3-hover-opacity img-thumbail">
   </a>
   {% endfor %}
   </div>
@@ -28,7 +30,7 @@
   <div class="w3-third w3-container w3-margin-bottom">
   {% for pic in pic_col3 %}
   <a href="#" class="pop">
-    <img src="data:image/{{pic[0].extension}};base64, {{pic[1]}}" alt="{{pic[2]}}" style="width:100%" class="w3-hover-opacity">
+    <img src="data:image/{{pic[0].extension}};base64, {{pic[1]}}" alt="{{pic[2]}}" style="width:100%" class="w3-hover-opacity img-thumbail">
   </a>
   {% endfor %}
   </div>

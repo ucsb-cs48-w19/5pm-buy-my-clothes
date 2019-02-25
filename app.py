@@ -27,7 +27,7 @@ class imagePost(db.Model):
 	image     = db.Column(db.LargeBinary)
 	filename  = db.Column(db.Text, nullable=False)
 	extension = db.Column(db.String(5), nullable=False)
-	
+
 	body      = db.Column(db.Text, nullable=False)
 	category  = db.Column(db.Text, nullable=True)
 
@@ -62,7 +62,7 @@ def pic_in_db(hash_val):
     Args:
         hash_val(bytes obj): Hash value of uploaded pic
 
-    Returns: 
+    Returns:
         Boolean true if pic in db, o.w. false
 
     """
@@ -110,6 +110,10 @@ def index():
 @app.route('/browse')
 def browse():
     return render_template('browse.html')
+
+@app.route('/browsemens')
+def browsemens():
+	return render_template('browsemens.html')
 
 @app.route('/clothes')
 def clothes():
@@ -189,7 +193,7 @@ def upload():
 		return 'Please login to access'
 
 @app.route('/login', methods=['GET', 'POST'])
-def login(): 
+def login():
 	if request.method == 'POST':
 
 		username = request.form['username']
@@ -199,9 +203,9 @@ def login():
 			return "Error: User not found"
 
 		if not bcrypt.check_password_hash(user_password(username),password):
-			return "Password given : " + password + '<br>Password Expected : ' + user_password(username) 
+			return "Password given : " + password + '<br>Password Expected : ' + user_password(username)
 
-		else: 
+		else:
 			session['username'] = 'username'
 			return redirect(url_for('clothes'))
 
@@ -224,7 +228,7 @@ def register():
 
 			return 'Account created for user : ' + username + '<br>With password : ' + password
 
-		else: 
+		else:
 			return 'You\'re already in here silly!'
 
 	else:
