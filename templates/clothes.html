@@ -4,6 +4,8 @@
 {% block title %}Shop My Style{% endblock %}
 {% block description %}Click on the photos to shop the look{% endblock %}
 
+
+
 {% block content %}
 
 <!-- Photo Grid -->
@@ -11,7 +13,9 @@
   <div class="w3-third w3-container w3-margin-bottom">
   {% for pic in pic_col1 %}
   <a href="#" class="pop">
-    <img src="data:image/{{pic[0].extension}};base64,{{pic[1]}}" alt="{{pic[2]}}" style="width:100%" class="w3-hover-opacity">
+    <data value="{{pic[2]}}">
+      <img src="data:image/{{pic[0].extension}};base64,{{pic[1]}}" style="width:100%" class="w3-hover-opacity">
+    </data>
   </a>
 
   {% endfor %}
@@ -20,7 +24,9 @@
   <div class="w3-third w3-container w3-margin-bottom">
   {% for pic in pic_col2 %}
   <a href="#" class="pop">
-    <img src="data:image/{{pic[0].extension}};base64, {{pic[1]}}" alt="{{pic[2]}}" style="width:100%" class="w3-hover-opacity">
+    <data value="{{pic[2]}}">
+      <img src="data:image/{{pic[0].extension}};base64, {{pic[1]}}" style="width:100%" class="w3-hover-opacity">
+    </data>
   </a>
   {% endfor %}
   </div>
@@ -28,7 +34,9 @@
   <div class="w3-third w3-container w3-margin-bottom">
   {% for pic in pic_col3 %}
   <a href="#" class="pop">
-    <img src="data:image/{{pic[0].extension}};base64, {{pic[1]}}" alt="{{pic[2]}}" style="width:100%" class="w3-hover-opacity">
+    <data value="{{pic[2]}}">
+      <img src="data:image/{{pic[0].extension}};base64, {{pic[1]}}" style="width:100%" class="w3-hover-opacity">
+    </data>
   </a>
   {% endfor %}
   </div>
@@ -39,14 +47,14 @@
 $(function() {
     $('.pop').on('click', function() {
         $('.imagepreview').attr('src', $(this).find('img').attr('src'));
-        var body = $(this).find('img').attr('alt')
+        var body = $(this).find('data').attr('value')
         var links = body.split(' ');
         console.log(links);
         $('.text-left').empty();
         for (i in links) {
           var category = links[i].split(';')[0];
           var link = links[i].split(';')[1];
-          $('.text-left').append('<div><p><b>' + category + ': </b><a href=\"' + link + '\" target=\"_blank\">' + link + '</a></p></div>');
+          $('.text-left').append('<div><p><b>' + category + ': </b><a href=\"//' + link + '\" target=\"_blank\">' + link + '</a></p></div>');
         }
         $('#imagemodal').modal('show');
     });
@@ -65,7 +73,6 @@ $(function() {
      <div class="col-xs-12">
          <div class="text-left"></div>
      </div>
-   </div>  
    </div>
  </div>
 </div>

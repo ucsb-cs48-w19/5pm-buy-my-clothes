@@ -27,8 +27,8 @@ class imagePost(db.Model):
 	image     = db.Column(db.LargeBinary)
 	filename  = db.Column(db.Text, nullable=False)
 	extension = db.Column(db.String(5), nullable=False)
-	
-	body      = db.Column(db.Text, nullable=False)
+
+	links     = db.Column(db.Text, nullable=False)
 	category  = db.Column(db.Text, nullable=True)
 
 	def __repr__(self):
@@ -62,7 +62,7 @@ def pic_in_db(hash_val):
     Args:
         hash_val(bytes obj): Hash value of uploaded pic
 
-    Returns: 
+    Returns:
         Boolean true if pic in db, o.w. false
 
     """
@@ -111,6 +111,10 @@ def index():
 def browse():
     return render_template('browse.html')
 
+@app.route('/browsemens')
+def browsemens():
+	return render_template('browsemens.html')
+
 @app.route('/clothes')
 def clothes():
 	postList = get_all_items()
@@ -123,8 +127,9 @@ def clothes():
 		#TODO: Make long string tuples with (descriptor, link) pair
 		#TODO: Put into separate function
 		category_link = ''
-		for i in range(len(post.body.split())):
-			category_link += post.category.split()[i] + ';' + post.body.split()[i] + ' '
+		for i in range(len(post.links
+		.split())):
+			category_link += post.category.split()[i] + ';' + post.links.split()[i] + ' '
 			print(category_link)
 		image_post_tuple = (post, image, category_link.strip())
 		imageList.append(image_post_tuple)
@@ -150,6 +155,7 @@ def clothes():
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
 	#Checks if the user is logged in to upload photos
+	print(session)
 	if 'username' in session:
 		if request.method == 'POST':
 			file = request.files['file']
@@ -170,12 +176,12 @@ def upload():
 				count += 1
 
 
-			body = links.strip()
+			links = links.strip()
 			category = request.form['category'].strip()
-			print('body', body)
+			print('links', links)
 			print('category', category)
 
-			new_file = imagePost(image=file.read(), filename=filename, extension=extension, body=body, category=category)
+			new_file = imagePost(image=file.read(), filename=filename, extension=extension, links=links, category=category)
 
 			db.session.add(new_file)
 			db.session.commit()
@@ -186,10 +192,10 @@ def upload():
 			return render_template('upload.html')
 
 	else:
-		return 'Please login to access'
+		return redirect(url_for('login'))
 
 @app.route('/login', methods=['GET', 'POST'])
-def login(): 
+def login():
 	if request.method == 'POST':
 
 		username = request.form['username']
@@ -199,9 +205,9 @@ def login():
 			return "Error: User not found"
 
 		if not bcrypt.check_password_hash(user_password(username),password):
-			return "Password given : " + password + '<br>Password Expected : ' + user_password(username) 
+			return "Password given : " + password + '<br>Password Expected : ' + user_password(username)
 
-		else: 
+		else:
 			session['username'] = 'username'
 			return redirect(url_for('clothes'))
 
@@ -224,7 +230,7 @@ def register():
 
 			return 'Account created for user : ' + username + '<br>With password : ' + password
 
-		else: 
+		else:
 			return 'You\'re already in here silly!'
 
 	else:
@@ -234,8 +240,8 @@ def register():
 if __name__ == "__main__":
 	#Clears the DB on init so changes to db class don't create issues
 	#NOTE: Since the flask app should only be ran once this won't continuously clear the db
-	db.drop_all()
-	db.create_all()
+	#db.drop_all()
+	#db.create_all()
 
 	#Runs the app
 	app.run()
