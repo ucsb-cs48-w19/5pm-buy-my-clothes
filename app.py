@@ -217,14 +217,14 @@ def login():
 
 		else:
 			session['username'] = username
-			return redirect(url_for('clothes'))
+			return redirect(url_for('index'))
 
 	return render_template('login.html')
 
 @app.route('/logout')
 def logout():
 	session.pop('username', None)
-	return redirect(url_for('clothes'))
+	return redirect(url_for('index'))
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -242,7 +242,7 @@ def signup():
 			db.session.commit()
 
 			session['username'] = username
-			return redirect(url_for('clothes'))
+			return redirect(url_for('index'))
 			#return 'Account created for user : ' + username + '<br>With password : ' + password
 
 		else:
