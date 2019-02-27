@@ -182,15 +182,12 @@ def upload():
 			links = ''
 			while request.form.get(key + str(count)):
 				link = request.form.get(key + str(count))
-				print(link)
 				links += link + ' '
 				count += 1
 
 
 			links = links.strip()
 			category = request.form['category'].strip()
-			print('links', links)
-			print('category', category)
 
 			new_file = imagePost(image=file.read(), filename=filename, extension=extension, links=links, category=category)
 
@@ -219,13 +216,18 @@ def login():
 			return "Password given : " + password + '<br>Password Expected : ' + user_password(username)
 
 		else:
-			session['username'] = 'username'
-			return redirect(url_for('clothes'))
+			session['username'] = username
+			return redirect(url_for('index'))
 
 	return render_template('login.html')
 
-@app.route('/register', methods=['GET', 'POST'])
-def register():
+@app.route('/logout')
+def logout():
+	session.pop('username', None)
+	return redirect(url_for('index'))
+
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
 	#form = RegistrationForm(request.form)
 	if request.method == 'POST':
 
@@ -239,13 +241,15 @@ def register():
 			db.session.add(new_user)
 			db.session.commit()
 
-			return 'Account created for user : ' + username + '<br>With password : ' + password
+			session['username'] = username
+			return redirect(url_for('index'))
+			#return 'Account created for user : ' + username + '<br>With password : ' + password
 
 		else:
 			return 'You\'re already in here silly!'
 
 	else:
-		return render_template('register.html')
+		return render_template('signup.html')
 
 
 if __name__ == "__main__":
