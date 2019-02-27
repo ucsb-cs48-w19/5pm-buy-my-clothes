@@ -1,7 +1,7 @@
 import pytest
 
-from app import user_password
+from app import parse_filename
    
-def test_user_password1():
-   assert user_password("user") == "pass"
+def test_parse_filename1():
+   assert parse_filename("image.png") == "image"
    
