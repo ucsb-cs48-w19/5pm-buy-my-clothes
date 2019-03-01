@@ -25,19 +25,27 @@ $(function() {
     "accessories",
     "bags",
     "coats",
-    "dress",
+    "dresses",
     "jeans",
     "jewelry",
     "pants",
     "rompers",
-    "shirts",
-    "shirtsandblouses",
+    "shirts-and-blouses",
     "shoes",
     "shorts",
     "skirts",
     "sweaters",
     "swimwear",
-    "tshirtsandtanks"
+    "tshirts-and-tanks",
+    "mens-accessories",
+    "mens-coats",
+    "mens-pants",
+    "mens-shirts",
+    "mens-shoes",
+    "mens-shorts",
+    "mens-sweaters",
+    "mens-swim",
+    "mens-tshirts"
   ];
 
   $("#form-category").autocomplete({
@@ -65,6 +73,26 @@ $(function() {
       count += 1;
     }
   }
+
+  //Copied from https://stackoverflow.com/questions/585396/how-to-prevent-enter-keypress-to-submit-a-web-form
+  //Fixes issue where cliking enter on an input field submits the form
+  $(function() {
+    var keyStop = {
+    8: ":not(input:text, textarea, input:file, input:password)", //stop backspace = back
+    13: "input:text, input:password", //stop enter = submit
+
+    end: null
+  };
+
+    $(document).bind("keydown", function(event) {
+      var selector = keyStop[event.which];
+
+      if(selector !== undefined && $(event.target).is(selector)) {
+        event.preventDefault(); //stop event
+      }
+      return true;
+    });
+  });
 
   document.getElementById("upload-form").onsubmit = function() {
     console.log(endText);

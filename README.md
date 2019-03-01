@@ -28,6 +28,7 @@ https://shop-my-style.herokuapp.com/
 - flask_script
 - flask_migrate
 - psycopg2
+- bcrypt
 - gunicorn
 
 

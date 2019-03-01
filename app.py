@@ -105,7 +105,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 
 @app.route('/')
 def index():
-    return redirect(url_for('clothes'))
+    return clothes('all')
 
 @app.route('/browse')
 def browse():
@@ -115,13 +115,24 @@ def browse():
 def browsemens():
 	return render_template('browsemens.html')
 
-@app.route('/clothes')
-def clothes():
+@app.route('/clothes/<category>')
+def clothes(category):
 	postList = get_all_items()
 
 	#Makes list of all images
 	imageList = []
-	for post in postList:
+	categoryList = []
+
+	if category != 'all':
+		for post in postList:
+			if category in post.category:
+				categoryList.append(post)
+
+	else:
+		categoryList = postList
+
+
+	for post in categoryList:
 		image = str(b64encode(post.image))[2:-1]
 
 		#TODO: Make long string tuples with (descriptor, link) pair
@@ -171,22 +182,19 @@ def upload():
 			links = ''
 			while request.form.get(key + str(count)):
 				link = request.form.get(key + str(count))
-				print(link)
 				links += link + ' '
 				count += 1
 
 
 			links = links.strip()
 			category = request.form['category'].strip()
-			print('links', links)
-			print('category', category)
 
 			new_file = imagePost(image=file.read(), filename=filename, extension=extension, links=links, category=category)
 
 			db.session.add(new_file)
 			db.session.commit()
 
-			return redirect(url_for('clothes'))
+			return redirect(url_for('index'))
 
 		else:
 			return render_template('upload.html')
@@ -208,13 +216,18 @@ def login():
 			return "Password given : " + password + '<br>Password Expected : ' + user_password(username)
 
 		else:
-			session['username'] = 'username'
-			return redirect(url_for('clothes'))
+			session['username'] = username
+			return redirect(url_for('index'))
 
 	return render_template('login.html')
 
-@app.route('/register', methods=['GET', 'POST'])
-def register():
+@app.route('/logout')
+def logout():
+	session.pop('username', None)
+	return redirect(url_for('index'))
+
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
 	#form = RegistrationForm(request.form)
 	if request.method == 'POST':
 
@@ -228,13 +241,15 @@ def register():
 			db.session.add(new_user)
 			db.session.commit()
 
-			return 'Account created for user : ' + username + '<br>With password : ' + password
+			session['username'] = username
+			return redirect(url_for('index'))
+			#return 'Account created for user : ' + username + '<br>With password : ' + password
 
 		else:
 			return 'You\'re already in here silly!'
 
 	else:
-		return render_template('register.html')
+		return render_template('signup.html')
 
 
 if __name__ == "__main__":
