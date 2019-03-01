@@ -15,4 +15,4 @@ def test_parse_filename4():
 	assert parse_filename("image.jpeg") == ('image', 'jpeg')
 
 def test_parse_filename5():
-	assert parse_filename("image.exe") == ('None', 'None')
+	assert parse_filename("image.exe") == (None, None)
