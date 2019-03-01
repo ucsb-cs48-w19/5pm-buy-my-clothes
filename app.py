@@ -145,6 +145,8 @@ def clothes(category):
 		image_post_tuple = (post, image, category_link.strip())
 		imageList.append(image_post_tuple)
 
+
+	imageList = imageList[::-1]
 	col1 = []
 	col2 = []
 	col3 = []
@@ -157,11 +159,8 @@ def clothes(category):
 		elif i % 3 == 2:
 			col3.append(imageList[i])
 
-	col1 = col1[::-1]
-	col2 = col2[::-1]
-	col3 = col3[::-1]
 
-	return render_template('clothes.html', pic_col1=col1[::-1], pic_col2=col2[::-1], pic_col3=col3[::-1])
+	return render_template('clothes.html', pic_col1=col1, pic_col2=col2, pic_col3=col3)
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
