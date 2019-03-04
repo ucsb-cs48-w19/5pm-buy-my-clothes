@@ -16,6 +16,32 @@ db = SQLAlchemy(app)
 #app.secret_key = ''.join(random.choices(string.ascii_letters, k=16))
 app.secret_key = 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'
 
+categoryNames = [
+"accessories",
+"bags",
+"coats",
+"dresses",
+"jeans",
+"jewelry",
+"pants",
+"rompers",
+"shirts-and-blouses",
+"shoes",
+"shorts",
+"skirts",
+"sweaters",
+"swimwear",
+"tshirts-and-tanks",
+"mens-accessories",
+"mens-coats",
+"mens-pants",
+"mens-shirts",
+"mens-shoes",
+"mens-shorts",
+"mens-sweaters",
+"mens-swim",
+"mens-tshirts"]
+
 
 ###################################
 #       TABLES IN OUR DATABASE    #
@@ -27,12 +53,13 @@ class imagePost(db.Model):
 	image     = db.Column(db.LargeBinary)
 	filename  = db.Column(db.Text, nullable=False)
 	extension = db.Column(db.String(5), nullable=False)
+	username  = db.Column(db.String(15), nullable=False)
 
 	links     = db.Column(db.Text, nullable=False)
 	category  = db.Column(db.Text, nullable=True)
 
 	def __repr__(self):
-		return '<Post %r, Filename %s, extension %s>' % self.id, self.filename, self.extension
+		return '<Post %r, User %s, Filename %s, extension %s>' % (self.id, self.username, self.filename, self.extension)
 
 
 class User(db.Model):
@@ -41,6 +68,9 @@ class User(db.Model):
 	username = db.Column(db.String(15), nullable=False, unique=True)
 	password = db.Column(db.String(300), nullable=False)
 	email = db.Column(db.String(50), nullable=False, unique=True)
+
+	def __repr__(self):
+		return '<User %r>' % self.username
 
 
 ###################################
@@ -146,10 +176,9 @@ def clothes(category):
 		#TODO: Make long string tuples with (descriptor, link) pair
 		#TODO: Put into separate function
 		category_link = ''
-		for i in range(len(post.links
-		.split())):
+		for i in range(len(post.links.split())):
 			category_link += post.category.split()[i] + ';' + post.links.split()[i] + ' '
-			print(category_link)
+		print(category_link)
 		image_post_tuple = (post, image, category_link.strip())
 		imageList.append(image_post_tuple)
 
@@ -167,7 +196,6 @@ def clothes(category):
 		elif i % 3 == 2:
 			col3.append(imageList[i])
 
-
 	return render_template('clothes.html', pic_col1=col1, pic_col2=col2, pic_col3=col3)
 
 @app.route('/upload', methods=['GET', 'POST'])
@@ -184,19 +212,25 @@ def upload():
 				return "oopsie woopsie you messed up"
 
 			#TODO: Make this cleaner/less hackier
-			count = 0
-			key = 'category-link-'
+
+			count = len(request.form)
+			index = 0
+			categories = ''
 			links = ''
-			while request.form.get(key + str(count)):
-				link = request.form.get(key + str(count))
-				links += link + ' '
-				count += 1
+			for key, value in request.form.items():
+				index += 1
+				if index >= count - 1:
+					break
 
+				if 'selector' in key:
+					categories += value + ' '
+				elif 'link' in key:
+					links += value + ' '
 
+			categories = categories.strip()
 			links = links.strip()
-			category = request.form['category'].strip()
 
-			new_file = imagePost(image=file.read(), filename=filename, extension=extension, links=links, category=category)
+			new_file = imagePost(image=file.read(), filename=filename, extension=extension, username=session.get('username'), links=links, category=categories)
 
 			db.session.add(new_file)
 			db.session.commit()
@@ -204,7 +238,7 @@ def upload():
 			return redirect(url_for('index'))
 
 		else:
-			return render_template('upload.html')
+			return render_template('upload.html', categoryNames=categoryNames)
 
 	else:
 		return redirect(url_for('login'))
