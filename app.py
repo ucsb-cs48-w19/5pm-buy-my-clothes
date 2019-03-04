@@ -66,6 +66,7 @@ class User(db.Model):
 
 	username = db.Column(db.String(15), nullable=False, unique=True)
 	password = db.Column(db.String(300), nullable=False)
+	email = db.Column(db.String(50), nullable=False, unique=True)
 
 	def __repr__(self):
 		return '<User %r>' % self.username
@@ -123,7 +124,14 @@ def user_in_db(username):
 def user_password(username):
 	return User.query.filter_by(username=username).first().password
 
+def user_email_exists(email):
+	return User.query.filter_by(email=email).count() == 1
 
+def check_legit_email(email):
+	if "@" in email and "." in email and (email.find('@') < email.find('.')):
+		return True
+	else:
+		return False
 
 #Determines path to database
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL') or 'sqlite:///' + os.path.join(os.getcwd() , 'database/app.db')
@@ -174,6 +182,8 @@ def clothes(category):
 		image_post_tuple = (post, image, category_link.strip())
 		imageList.append(image_post_tuple)
 
+
+	imageList = imageList[::-1]
 	col1 = []
 	col2 = []
 	col3 = []
@@ -187,10 +197,6 @@ def clothes(category):
 			col2.append(imageList[i])
 		elif i % 3 == 2:
 			col3.append(imageList[i])
-
-	col1 = col1
-	col2 = col2
-	col3 = col3
 
 	return render_template('clothes.html', pic_col1=col1, pic_col2=col2, pic_col3=col3)
 
@@ -269,21 +275,32 @@ def signup():
 	if request.method == 'POST':
 
 		username = request.form['username']
+		email = request.form['email']
 		password = bcrypt.generate_password_hash(request.form['password']).decode('utf-8')
 
+
 		#Add user to database
-		if not user_in_db(username):
+		if not user_in_db(username) and not user_email_exists(email):
 
-			new_user = User(username=username, password=password)
-			db.session.add(new_user)
-			db.session.commit()
+			#Check if email is legit
+			if check_legit_email(email)==False:
+				return 'Invalid email'
 
-			session['username'] = username
-			return redirect(url_for('index'))
-			#return 'Account created for user : ' + username + '<br>With password : ' + password
+			else:
+				new_user = User(username=username, password=password, email=email)
+				db.session.add(new_user)
+				db.session.commit()
 
-		else:
+
+
+				session['username'] = username
+				return redirect(url_for('index'))
+				#return 'Account created for user : ' + username + '<br>With password : ' + password
+
+		elif user_in_db(username):
 			return 'You\'re already in here silly!'
+		elif user_email_exists(email):
+			return 'Account with this email address already exists'
 
 	else:
 		return render_template('signup.html')
