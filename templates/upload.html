@@ -7,75 +7,95 @@
 
 <form method=post action="/upload" id="upload-form" enctype=multipart/form-data>
 
- <div class="form-category-links"></div>
+  <div class="form-category-links"></div>
 
-<input class="form-control" id="form-category" type="text" name="category" placeholder="Categories">
+  <div class="container">
+  	<h3>Fields</h3>
+      <div class="row">
+          <div class="form-group form-group-options col-xs-11 col-sm-8 col-md-4">
+      		<div class="input-group input-group-option col-xs-12">
+            <div class="form-group">
+              <select name="form-selector" class="form-control" id="form-selector">
+                {% for name in categoryNames %}
+                  <option>{{ name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <input type="text" name="form-link" class="form-control" required="required" id="form-link" placeholder="Link">
+      			<span class="input-group-addon input-group-addon-remove">
+      				<span class="glyphicon glyphicon-remove"></span>
+      			</span>
+      		</div>
+      	</div>
+      </div>
+  </div>
 
-    <input type=file name=file>
+<!-- <input class="form-control" id="form-category" type="text" name="category" placeholder="Categories"> -->
+
+    <input type=file name=file required="required">
     <input type=submit value=Upload>
 </form>
+<style>
+  div.input-group-option:last-child span.input-group-addon-remove {
+    display: none;
+  }
 
+  div.input-group-option:last-child input.form-control {
+    border-bottom-right-radius: 3px;
+    border-top-right-radius: 3px;
+  }
+
+  div.input-group-option span.input-group-addon-remove {
+    cursor: pointer;
+  }
+
+  div.input-group-option {
+    margin-bottom: 10px;
+  }
+</style>
 <!--Script that autocompletes categories-->
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script>
 $(function() {
-  var categories = [
-    "accessories",
-    "bags",
-    "coats",
-    "dresses",
-    "jeans",
-    "jewelry",
-    "pants",
-    "rompers",
-    "shirts-and-blouses",
-    "shoes",
-    "shorts",
-    "skirts",
-    "sweaters",
-    "swimwear",
-    "tshirts-and-tanks",
-    "mens-accessories",
-    "mens-coats",
-    "mens-pants",
-    "mens-shirts",
-    "mens-shoes",
-    "mens-shorts",
-    "mens-sweaters",
-    "mens-swim",
-    "mens-tshirts"
-  ];
+  var categoryCount = 0;
+  var counter = 0;
+  $(document).on('focus', 'div.form-group-options div.input-group-option:last-child input', function() {
+    if (categoryCount < 10) {
+      categoryCount += 1;
+      var sInputGroupHtml = $(this).parent().html();
+      var sInputGroupClasses = $(this).parent().attr('class');
 
-  $("#form-category").autocomplete({
-    source: categories
-  });
+      var formSelectorString = 'name="form-selector'
+      var formSelectorStartIndex = sInputGroupHtml.indexOf(formSelectorString) + 6
+      var formSelectorEndIndex = sInputGroupHtml.indexOf('"', formSelectorStartIndex + 1)
+      sInputGroupHtml = sInputGroupHtml.slice(0, formSelectorStartIndex) + 'form-selector-' + counter + sInputGroupHtml.slice(formSelectorEndIndex)
 
-  var count = 0;
-  var endText = "";
-  $("#form-category").on("keyup", function(e) {
-    if (e.which == 13) {
-      addCategory();
+      var formLinkString = 'name="form-link'
+      var formLinkStartIndex = sInputGroupHtml.indexOf(formLinkString) + 6
+      var formLinkEndIndex = sInputGroupHtml.indexOf('"', formLinkStartIndex + 1)
+      sInputGroupHtml = sInputGroupHtml.slice(0, formLinkStartIndex) + 'form-link-' + counter + sInputGroupHtml.slice(formLinkEndIndex)
+
+      var newElement = $('<div class="'+sInputGroupClasses+'">'+sInputGroupHtml+'</div>').appendTo($(this).parent().parent());
+      counter += 1;
+
+      $('.row').children().children().each(function(index, value) {
+        isRequired = $(this).find("span").css('display') != 'none'
+        //$(this).find('#form-category').prop('required', isRequired);
+        $(this).find('#form-link').prop('required', isRequired);
+      });
     }
-  });
+	});
 
-  $("#form-category").on("input", function() {
-    addCategory();
-  });
+	$(document).on('click', 'div.form-group-options .input-group-addon-remove', function() {
+    $(this).parent().remove();
+    categoryCount -= 1;
+	});
 
-  function addCategory() {
-    var text = $("#form-category").val().replace(/\s/g, "");
-    if (jQuery.inArray(text, categories) > -1) {
-      $("#form-category").val("");
-      endText += text + " ";
-      $(".form-category-links").append("<div class=\"form-category-link\" name=\"" + count + "\" >#" + text + " <input type=\"text\" name=\"category-link-" + count + "\" placeholder=\"Link\"></div>");
-      count += 1;
-    }
-  }
 
   //Copied from https://stackoverflow.com/questions/585396/how-to-prevent-enter-keypress-to-submit-a-web-form
-  //Fixes issue where cliking enter on an input field submits the form
+  //Fixes issue where clicking enter on an input field submits the form
   $(function() {
     var keyStop = {
     8: ":not(input:text, textarea, input:file, input:password)", //stop backspace = back
@@ -93,11 +113,6 @@ $(function() {
       return true;
     });
   });
-
-  document.getElementById("upload-form").onsubmit = function() {
-    console.log(endText);
-    $("#form-category").val(endText);
-  };
 });
 </script>
 

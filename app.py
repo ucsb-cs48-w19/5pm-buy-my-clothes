@@ -16,6 +16,32 @@ db = SQLAlchemy(app)
 #app.secret_key = ''.join(random.choices(string.ascii_letters, k=16))
 app.secret_key = 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'
 
+categoryNames = [
+"accessories",
+"bags",
+"coats",
+"dresses",
+"jeans",
+"jewelry",
+"pants",
+"rompers",
+"shirts-and-blouses",
+"shoes",
+"shorts",
+"skirts",
+"sweaters",
+"swimwear",
+"tshirts-and-tanks",
+"mens-accessories",
+"mens-coats",
+"mens-pants",
+"mens-shirts",
+"mens-shoes",
+"mens-shorts",
+"mens-sweaters",
+"mens-swim",
+"mens-tshirts"]
+
 
 ###################################
 #       TABLES IN OUR DATABASE    #
@@ -32,7 +58,7 @@ class imagePost(db.Model):
 	category  = db.Column(db.Text, nullable=True)
 
 	def __repr__(self):
-		return '<Post %r, Filename %s, extension %s>' % self.id, self.filename, self.extension
+		return '<Post %r, Filename %s, extension %s>' % (self.id, self.filename, self.extension)
 
 
 class User(db.Model):
@@ -40,6 +66,9 @@ class User(db.Model):
 
 	username = db.Column(db.String(15), nullable=False, unique=True)
 	password = db.Column(db.String(300), nullable=False)
+
+	def __repr__(self):
+		return '<User %r>' % self.username
 
 
 ###################################
@@ -149,6 +178,8 @@ def clothes(category):
 	col2 = []
 	col3 = []
 
+	imageList = imageList[::-1]
+
 	for i in range(len(imageList)):
 		if i % 3 == 0:
 			col1.append(imageList[i])
@@ -157,11 +188,11 @@ def clothes(category):
 		elif i % 3 == 2:
 			col3.append(imageList[i])
 
-	col1 = col1[::-1]
-	col2 = col2[::-1]
-	col3 = col3[::-1]
+	col1 = col1
+	col2 = col2
+	col3 = col3
 
-	return render_template('clothes.html', pic_col1=col1[::-1], pic_col2=col2[::-1], pic_col3=col3[::-1])
+	return render_template('clothes.html', pic_col1=col1, pic_col2=col2, pic_col3=col3)
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
@@ -177,19 +208,25 @@ def upload():
 				return "oopsie woopsie you messed up"
 
 			#TODO: Make this cleaner/less hackier
-			count = 0
-			key = 'category-link-'
+
+			count = len(request.form)
+			index = 0
+			categories = ''
 			links = ''
-			while request.form.get(key + str(count)):
-				link = request.form.get(key + str(count))
-				links += link + ' '
-				count += 1
+			for key, value in request.form.items():
+				index += 1
+				if index >= count - 1:
+					break
 
+				if 'selector' in key:
+					categories += value + ' '
+				elif 'link' in key:
+					links += value + ' '
 
+			categories = categories.strip()
 			links = links.strip()
-			category = request.form['category'].strip()
 
-			new_file = imagePost(image=file.read(), filename=filename, extension=extension, links=links, category=category)
+			new_file = imagePost(image=file.read(), filename=filename, extension=extension, links=links, category=categories)
 
 			db.session.add(new_file)
 			db.session.commit()
@@ -197,7 +234,7 @@ def upload():
 			return redirect(url_for('index'))
 
 		else:
-			return render_template('upload.html')
+			return render_template('upload.html', categoryNames=categoryNames)
 
 	else:
 		return redirect(url_for('login'))
