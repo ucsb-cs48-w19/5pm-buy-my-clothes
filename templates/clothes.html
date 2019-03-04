@@ -14,7 +14,7 @@
   {% for pic in pic_col1 %}
   <a href="#" class="pop">
     <data value="{{pic[2]}}">
-      <img src="data:image/{{pic[0].extension}};base64,{{pic[1]}}" style="width:100%" class="w3-hover-opacity">
+      <img src="data:image/{{pic[0].extension}};base64,{{pic[1]}}" alt="{{pic[0].username}}" style="width:100%" class="w3-hover-opacity">
     </data>
   </a>
 
@@ -25,7 +25,7 @@
   {% for pic in pic_col2 %}
   <a href="#" class="pop">
     <data value="{{pic[2]}}">
-      <img src="data:image/{{pic[0].extension}};base64, {{pic[1]}}" style="width:100%" class="w3-hover-opacity">
+      <img src="data:image/{{pic[0].extension}};base64, {{pic[1]}}" alt="{{pic[0].username}}" style="width:100%" class="w3-hover-opacity">
     </data>
   </a>
   {% endfor %}
@@ -35,7 +35,7 @@
   {% for pic in pic_col3 %}
   <a href="#" class="pop">
     <data value="{{pic[2]}}">
-      <img src="data:image/{{pic[0].extension}};base64, {{pic[1]}}" style="width:100%" class="w3-hover-opacity">
+      <img src="data:image/{{pic[0].extension}};base64, {{pic[1]}}" alt="{{pic[0].username}}" style="width:100%" class="w3-hover-opacity">
     </data>
   </a>
   {% endfor %}
@@ -49,7 +49,9 @@ $(function() {
         $('.imagepreview').attr('src', $(this).find('img').attr('src'));
         var body = $(this).find('data').attr('value')
         var links = body.split(' ');
+        var username = $(this).find('img').attr('alt');
         $('.text-left').empty();
+        $('.text-right').empty();
         for (i in links) {
           var category = links[i].split(';')[0];
           var link = links[i].split(';')[1];
@@ -59,6 +61,7 @@ $(function() {
             $('.text-left').append('<div><p><b>' + category + ': </b><a href=\"//' + link + '\" target=\"_blank\">' + link + '</a></p></div>');
           }
         }
+        $('.text-right').append('<p align="right">Posted by ' + username + '</p>');
         $('#imagemodal').modal('show');
     });
 });
@@ -75,6 +78,7 @@ $(function() {
    <div class="modal-footer">
      <div class="col-xs-12">
          <div class="text-left"></div>
+         <div class="text-right"></div>
      </div>
    </div>
  </div>

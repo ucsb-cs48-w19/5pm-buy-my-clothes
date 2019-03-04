@@ -53,12 +53,13 @@ class imagePost(db.Model):
 	image     = db.Column(db.LargeBinary)
 	filename  = db.Column(db.Text, nullable=False)
 	extension = db.Column(db.String(5), nullable=False)
+	username  = db.Column(db.String(15), nullable=False)
 
 	links     = db.Column(db.Text, nullable=False)
 	category  = db.Column(db.Text, nullable=True)
 
 	def __repr__(self):
-		return '<Post %r, Filename %s, extension %s>' % (self.id, self.filename, self.extension)
+		return '<Post %r, User %s, Filename %s, extension %s>' % (self.id, self.username, self.filename, self.extension)
 
 
 class User(db.Model):
@@ -175,10 +176,9 @@ def clothes(category):
 		#TODO: Make long string tuples with (descriptor, link) pair
 		#TODO: Put into separate function
 		category_link = ''
-		for i in range(len(post.links
-		.split())):
+		for i in range(len(post.links.split())):
 			category_link += post.category.split()[i] + ';' + post.links.split()[i] + ' '
-			print(category_link)
+		print(category_link)
 		image_post_tuple = (post, image, category_link.strip())
 		imageList.append(image_post_tuple)
 
@@ -187,8 +187,6 @@ def clothes(category):
 	col1 = []
 	col2 = []
 	col3 = []
-
-	imageList = imageList[::-1]
 
 	for i in range(len(imageList)):
 		if i % 3 == 0:
@@ -232,7 +230,7 @@ def upload():
 			categories = categories.strip()
 			links = links.strip()
 
-			new_file = imagePost(image=file.read(), filename=filename, extension=extension, links=links, category=categories)
+			new_file = imagePost(image=file.read(), filename=filename, extension=extension, username=session.get('username'), links=links, category=categories)
 
 			db.session.add(new_file)
 			db.session.commit()
