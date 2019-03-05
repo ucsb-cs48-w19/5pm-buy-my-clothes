@@ -14,8 +14,8 @@ db = SQLAlchemy(app)
 
 #DON'T TOUCH THIS LINE OF CODE WE NEED IT
 
-app.secret_key = ''.join(random.choices(string.ascii_letters, k=16))
-#app.secret_key = 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'
+#app.secret_key = ''.join(random.choices(string.ascii_letters, k=16))
+app.secret_key = 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'
 
 categoryNames = [
 "womens-accessories",
