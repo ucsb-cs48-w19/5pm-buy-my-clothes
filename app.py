@@ -270,7 +270,6 @@ def login():
 		if not bcrypt.check_password_hash(user_password(username),password):
 			session['badPassword'] = True
 			return render_template('login.html')
-			#return "Password given : " + password + '<br>Password Expected : ' + user_password(username)
 
 		else:
 			session['username'] = username
@@ -318,11 +317,9 @@ def signup():
 		elif user_in_db(username):
 			session['usernameExists'] = True
 			return render_template('signup.html')
-			#return 'You\'re already in here silly!'
 		elif user_email_exists(email):
 			session['emailExists'] = True
 			return render_template('signup.html')
-			#return 'Account with this email address already exists'
 
 	else:
 		return render_template('signup.html')
