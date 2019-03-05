@@ -217,10 +217,20 @@ def upload():
 			index = 0
 			categories = ''
 			links = ''
+			lastCategory = ''
 			for key, value in request.form.items():
 				index += 1
-				if index >= count - 1:
-					break
+				if index > count - 1:
+					print('start')
+					print(key, value)
+					if not value:
+						break
+					categories += lastCategory + ' '
+				elif index > count - 2:
+					print('hello')
+					print(key, value)
+					lastCategory = value
+					continue
 
 				if 'selector' in key:
 					categories += value + ' '
@@ -293,7 +303,6 @@ def signup():
 
 				session['username'] = username
 				return redirect(url_for('index'))
-				#return 'Account created for user : ' + username + '<br>With password : ' + password
 
 		elif user_in_db(username):
 			return 'You\'re already in here silly!'
