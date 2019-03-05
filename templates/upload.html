@@ -10,7 +10,10 @@
   <div class="form-category-links"></div>
 
   <div class="container">
-  	<h3>Fields</h3>
+  	<h3>Links</h3>
+    {% if session['urlInvalid'] %}
+      <h5 style="color:#E5310A">One of the links entered is invalid!</h5>
+    {% endif %}
       <div class="row">
           <div class="form-group form-group-options col-xs-11 col-sm-8 col-md-4">
       		<div class="input-group input-group-option col-xs-12">
