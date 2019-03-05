@@ -6,6 +6,7 @@ from datetime import datetime
 from flask import Flask, render_template, request, url_for, redirect, session, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
+import validators
 
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
@@ -13,8 +14,8 @@ db = SQLAlchemy(app)
 
 #DON'T TOUCH THIS LINE OF CODE WE NEED IT
 
-#app.secret_key = ''.join(random.choices(string.ascii_letters, k=16))
-app.secret_key = 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'
+app.secret_key = ''.join(random.choices(string.ascii_letters, k=16))
+#app.secret_key = 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'
 
 categoryNames = [
 "womens-accessories",
@@ -203,6 +204,7 @@ def upload():
 	#Checks if the user is logged in to upload photos
 	print(session)
 	if 'username' in session:
+		session['urlInvalid'] = False
 		if request.method == 'POST':
 			file = request.files['file']
 			filename, extension = parse_filename(file.filename) #input sanitization
@@ -221,20 +223,19 @@ def upload():
 			for key, value in request.form.items():
 				index += 1
 				if index > count - 1:
-					print('start')
-					print(key, value)
 					if not value:
 						break
 					categories += lastCategory + ' '
 				elif index > count - 2:
-					print('hello')
-					print(key, value)
 					lastCategory = value
 					continue
 
 				if 'selector' in key:
 					categories += value + ' '
 				elif 'link' in key:
+					if not (validators.domain(value) or validators.url(value)):
+						session['urlInvalid'] = True
+						return render_template('upload.html', categoryNames=categoryNames)
 					links += value + ' '
 
 			categories = categories.strip()
