@@ -255,16 +255,22 @@ def upload():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+	session['noUser'] = False
+	session['badPassword'] = False
+
 	if request.method == 'POST':
 
 		username = request.form['username']
 		password = request.form['password']
 
 		if not user_in_db(username):
-			return "Error: User not found"
+			session['noUser'] = True
+			return render_template('login.html')
 
 		if not bcrypt.check_password_hash(user_password(username),password):
-			return "Password given : " + password + '<br>Password Expected : ' + user_password(username)
+			session['badPassword'] = True
+			return render_template('login.html')
+			#return "Password given : " + password + '<br>Password Expected : ' + user_password(username)
 
 		else:
 			session['username'] = username
@@ -279,6 +285,10 @@ def logout():
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
+	session['usernameExists'] = False
+	session['emailExists'] = False
+	session['invalidEmail'] = False
+
 	#form = RegistrationForm(request.form)
 	if request.method == 'POST':
 
@@ -292,7 +302,8 @@ def signup():
 
 			#Check if email is legit
 			if check_legit_email(email)==False:
-				return 'Invalid email'
+				session['invalidEmail'] = True
+				return render_template('signup.html')
 
 			else:
 				new_user = User(username=username, password=password, email=email)
@@ -305,9 +316,13 @@ def signup():
 				return redirect(url_for('index'))
 
 		elif user_in_db(username):
-			return 'You\'re already in here silly!'
+			session['usernameExists'] = True
+			return render_template('signup.html')
+			#return 'You\'re already in here silly!'
 		elif user_email_exists(email):
-			return 'Account with this email address already exists'
+			session['emailExists'] = True
+			return render_template('signup.html')
+			#return 'Account with this email address already exists'
 
 	else:
 		return render_template('signup.html')

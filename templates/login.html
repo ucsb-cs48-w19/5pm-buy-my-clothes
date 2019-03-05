@@ -17,6 +17,16 @@
     <div class="row">
     <div class="col-lg-12">
         <h1 class=>Login</h1>
+
+        {% if session['noUser'] %}
+          <h5 style="color:#E5310A">An account with this username does not exist</h5>
+          <a href="{{ url_for('signup') }}"> <b>Sign Up</b></a>
+        {% endif %}
+
+        {% if session['badPassword'] %}
+          <h5 style="color:#E5310A">Incorrect password</h5>
+        {% endif %}
+
         <form method="post">
             Username<br>
             <input type="text" name="username"><br>
