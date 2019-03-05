@@ -62,7 +62,7 @@ $(function() {
   var categoryCount = 0;
   var counter = 0;
   $(document).on('focus', 'div.form-group-options div.input-group-option:last-child input', function() {
-    if (categoryCount < 10) {
+    if (categoryCount < 9) {
       categoryCount += 1;
       var sInputGroupHtml = $(this).parent().html();
       var sInputGroupClasses = $(this).parent().attr('class');
