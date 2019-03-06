@@ -129,7 +129,7 @@ def user_email_exists(email):
 	return User.query.filter_by(email=email).count() == 1
 
 def check_legit_email(email):
-	if "@" in email and "." in email and (email.find('@') < email.find('.')):
+	if "@" in email and "." in email and (email.rfind('.') > email.find('@')):
 		return True
 	else:
 		return False
