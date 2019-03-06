@@ -164,7 +164,8 @@ def clothes(category):
 
 	if category != 'all':
 		for post in postList:
-			if category in post.category:
+			categories = post.category.split()
+			if category in categories:
 				categoryList.append(post)
 
 	else:
