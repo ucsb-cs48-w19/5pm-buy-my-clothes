@@ -98,7 +98,7 @@ def pic_in_db(hash_val):
         Boolean true if pic in db, o.w. false
 
     """
-    if imagePost.query.filter_by(hash_val=hash_val).count() > 1:
+    if imagePost.query.filter_by(hash_val=hash_val).count() > 0:
         return True
     return False
 
