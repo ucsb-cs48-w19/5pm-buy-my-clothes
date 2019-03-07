@@ -9,6 +9,7 @@
 {% block content %}
 
 <!-- Photo Grid -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <div class="w3-row-padding" id="myGrid" style="margin-bottom:128px">
   <div class="w3-third w3-container w3-margin-bottom">
   {% for pic in pic_col1 %}
@@ -56,9 +57,9 @@ $(function() {
           var category = links[i].split(';')[0];
           var link = links[i].split(';')[1];
           if (link.toLowerCase().startsWith('http')) {
-            $('.text-left').append('<div><p><b>' + category + ': </b><a href=\"' + link + '\" target=\"_blank\">' + link + '</a></p></div>');
+            $('.text-left').append('<div><p><b>' + category + ': </b><a href=\"' + link + '\" target=\"_blank\">Buy Me!</a></p></div>');
           } else {
-            $('.text-left').append('<div><p><b>' + category + ': </b><a href=\"//' + link + '\" target=\"_blank\">' + link + '</a></p></div>');
+            $('.text-left').append('<div><p><b>' + category + ': </b><a href=\"//' + link + '\" target=\"_blank\">Buy Me!</a></p></div>');
           }
         }
         $('.text-right').append('<p align="right">Posted by ' + username + '</p>');
