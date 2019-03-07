@@ -14,8 +14,8 @@ db = SQLAlchemy(app)
 
 #DON'T TOUCH THIS LINE OF CODE WE NEED IT
 
-app.secret_key = ''.join(random.choices(string.ascii_letters, k=16))
-#app.secret_key = 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'
+#app.secret_key = ''.join(random.choices(string.ascii_letters, k=16))
+app.secret_key = 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'
 
 categoryNames = [
 "womens-accessories",
@@ -71,7 +71,7 @@ class User(db.Model):
 	email = db.Column(db.String(50), nullable=False, unique=True)
 
 	def __repr__(self):
-		return '<User %r>' % self.username
+		return '<User %r, Email %s>' % (self.username, self.email)
 
 
 ###################################
@@ -98,7 +98,7 @@ def pic_in_db(hash_val):
         Boolean true if pic in db, o.w. false
 
     """
-    if imagePost.query.filter_by(hash_val=hash_val).count() > 1:
+    if imagePost.query.filter_by(hash_val=hash_val).count() > 0:
         return True
     return False
 
@@ -247,7 +247,7 @@ def upload():
 	#Checks if the user is logged in to upload photos
 	print(session)
 	if 'username' in session:
-		session['urlInvalid'] = False
+		session.pop('urlInvalid', None)
 		if request.method == 'POST':
 			file = request.files['file']
 			filename, extension = parse_filename(file.filename) #input sanitization
@@ -299,8 +299,8 @@ def upload():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-	session['noUser'] = False
-	session['badPassword'] = False
+	session.pop('noUser', None)
+	session.pop('badPassword', None)
 
 	if request.method == 'POST':
 
@@ -328,14 +328,14 @@ def logout():
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
-	session['usernameExists'] = False
-	session['emailExists'] = False
-	session['invalidEmail'] = False
+	session.pop('usernameExists', None)
+	session.pop('emailExists', None)
+	session.pop('invalidEmail', None)
 
 	#form = RegistrationForm(request.form)
 	if request.method == 'POST':
 
-		username = request.form['username']
+		username = request.form['username'].lower()
 		email = request.form['email']
 		password = bcrypt.generate_password_hash(request.form['password']).decode('utf-8')
 
