@@ -304,7 +304,7 @@ def login():
 
 	if request.method == 'POST':
 
-		username = request.form['username']
+		username = request.form['username'].lower()
 		password = request.form['password']
 
 		if not user_in_db(username):
