@@ -207,11 +207,11 @@ def userprofile(username):
 	#Makes list of all images
 	imageList = []
 	userPostList = []
-	user = ''
+	username = username.lower()
 
 	if username != None:
 		for post in postList:
-			user = post.username
+			user = post.username.lower()
 			if username == user:
 				userPostList.append(post)
 
