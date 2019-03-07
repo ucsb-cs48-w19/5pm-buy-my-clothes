@@ -105,7 +105,7 @@ def pic_in_db(hash_val):
 
 def parse_filename(in_string):
 
-    ACCEPTED_EXTENSIONS = {'png','jpg', 'jpeg', 'gif'}
+    ACCEPTED_EXTENSIONS = {'png','jpg', 'jpeg', 'gif', 'tiff', 'heic'}
     lst = in_string.split('.')
 
     if (len(lst) != 2):
@@ -199,6 +199,48 @@ def clothes(category):
 			col3.append(imageList[i])
 
 	return render_template('clothes.html', pic_col1=col1, pic_col2=col2, pic_col3=col3)
+
+@app.route('/userprofile/<username>')
+def userprofile(username):
+	postList = get_all_items()
+
+	#Makes list of all images
+	imageList = []
+	userPostList = []
+	username = username.lower()
+
+	if username != None:
+		for post in postList:
+			user = post.username.lower()
+			if username == user:
+				userPostList.append(post)
+
+	for post in userPostList:
+		image = str(b64encode(post.image))[2:-1]
+
+		#TODO: Make long string tuples with (descriptor, link) pair
+		#TODO: Put into separate function
+		category_link = ''
+		for i in range(len(post.links.split())):
+			category_link += post.category.split()[i] + ';' + post.links.split()[i] + ' '
+		print(category_link)
+		image_post_tuple = (post, image, category_link.strip())
+		imageList.append(image_post_tuple)
+
+
+	imageList = imageList[::-1]
+	col1 = []
+	col2 = []
+	col3 = []
+
+	for i in range(len(imageList)):
+		if i % 3 == 0:
+			col1.append(imageList[i])
+		elif i % 3 == 1:
+			col2.append(imageList[i])
+		elif i % 3 == 2:
+			col3.append(imageList[i])
+	return render_template('userprofile.html', username=username, pic_col1=col1, pic_col2=col2, pic_col3=col3)
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
