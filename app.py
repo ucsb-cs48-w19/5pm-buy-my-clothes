@@ -71,7 +71,7 @@ class User(db.Model):
 	email = db.Column(db.String(50), nullable=False, unique=True)
 
 	def __repr__(self):
-		return '<User %r>' % self.username
+		return '<User %r, Email %s>' % (self.username, self.email)
 
 
 ###################################
@@ -293,7 +293,7 @@ def signup():
 	#form = RegistrationForm(request.form)
 	if request.method == 'POST':
 
-		username = request.form['username']
+		username = request.form['username'].lower()
 		email = request.form['email']
 		password = bcrypt.generate_password_hash(request.form['password']).decode('utf-8')
 
