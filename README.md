@@ -52,6 +52,9 @@ Next, cd into your project directory
 
 ## Run application locally
 
+Make a database folder
+`mkdir database`
+
 Open a python shell 
 `python3` 
 
