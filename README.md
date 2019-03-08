@@ -53,8 +53,10 @@ Next, cd into your project directory
 ## Run application locally
 
 Make a database folder
-`mkdir database`
-`touch database/app.db`
+```
+mkdir database
+touch database/app.db
+```
 
 Open a python shell 
 `python3` 
