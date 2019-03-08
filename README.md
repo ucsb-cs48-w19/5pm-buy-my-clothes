@@ -29,6 +29,7 @@ https://shop-my-style.herokuapp.com/
 - flask_migrate
 - psycopg2
 - bcrypt
+- validators
 - gunicorn
 
 
@@ -38,7 +39,7 @@ Download the latest version of [Python3](https://www.python.org/downloads/) and 
 
 Run the following commands
 ```
-pip3 install flask flask_sqlalchemy alembic flask_script flask_migrate flask_bcrypt psycopg2 gunicorn --user
+pip3 install flask flask_sqlalchemy alembic flask_script flask_migrate flask_bcrypt psycopg2 validators gunicorn --user
 ```
 
 Clone our directory
