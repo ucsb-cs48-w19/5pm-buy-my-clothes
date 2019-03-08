@@ -54,6 +54,7 @@ Next, cd into your project directory
 
 Make a database folder
 `mkdir database`
+`touch database/app.db`
 
 Open a python shell 
 `python3` 
